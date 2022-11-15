@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <title>Nouvelle Approvision</title>
+    <th:block th:replace="fragment/style.html"></th:block>
+
+</head>
+<body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
+<div class="wrapper">
+    <div th:replace="fragment/header"></div>
+
+    <div class="content-wrapper">
+
+        <!--Formulaire-->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 my-2">
+
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h3 class="card-title">Nouvelle Approvision</h3>
+                            </div>
+                            <form class="form-horizontal"  method="POST" th:action="@{/approvision/nouveau}"
+                                  th:object="${approvision}">
+                                <div class="card-body">
+
+                                    <div class="form-group row">
+                                        <label class="control-label col-md-2">Produits</label>
+                                        <div class="col-md-10">
+                                            <div class="panel panel-info">
+                                                <div class="panel-body scroll-350">
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Medicament</th>
+                                                            <th>Quantite</th>
+                                                            <th>Prix
+                                                                <button class="btn btn-xs btn-outline-success ml-5" id="addBtn"
+                                                                        type="button"><i class="fas fa-plus"></i> Nouveau</button>
+                                                            </th>
+
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="tbody">
+                                                        <tr>
+                                                            <td> <div class="form-group row">
+                                                                <div class="col-lg-12">
+                                                                    <select class="form-control select2bs4"
+                                                                            name="medicaments[0].medicament.id"
+                                                                            style="width: 100%;">
+                                                                        <option th:each="medicament:${medicaments}"
+                                                                                th:text="${medicament.nom}+' '
+                                                                                        +${medicament.prixVente}+' F CFA'"
+                                                                                th:value="${medicament.id}">
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div></td>
+                                                            <td><input class="form-control"
+                                                                       name="medicaments[0].quantite"
+                                                                       placeholder="Entrer la quantite" required
+                                                                       type="number"/></td>
+                                                            <td><input class="form-control"
+                                                                       name="medicaments[0].prix"
+                                                                       placeholder="Entrer le prix d'achat par unite de type"
+                                                                       required
+                                                                       type="number"/>
+                                                            </td>
+
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="card-footer text-center">
+                                    <button class="btn btn-info" type="submit">
+                                        <i class="fas fa-save"></i> Enregistre
+                                    </button>
+                                    <button class="btn btn-outline-danger" type="button"><i
+                                            class="fa fa-cancel"></i> <a th:href="@{/}">Annuler</a>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div th:replace="fragment/footer"></div>
+
+</div>
+</body>
+<script th:replace="fragment/script"></script>
+</html>

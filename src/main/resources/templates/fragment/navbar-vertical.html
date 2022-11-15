@@ -1,0 +1,237 @@
+<aside class="main-sidebar sidebar-dark-info elevation-4">
+    <a class="brand-link elevation-4" href="#">
+        <i class="fas fa-cart-arrow-down"></i> <span>  Gestion Parmacie</span></a>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <nav class="mt-3 mb-5">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
+
+
+                <li class="nav-header" sec:authorize="hasAuthority('UTILISATEUR')">Gestion Entree/Sorties</li>
+                <li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
+                    <a class="nav-link" th:href="@{/}"
+                       th:classappend="${#httpServletRequest.requestURI=='/vente/nouveau' or
+                        #httpServletRequest.requestURI=='/vente' or
+                        #httpServletRequest.requestURI=='/vente/info'  }?'active':''">
+                        <i class="nav-icon fas fa-cart-plus"></i>
+                        <p>Vente
+                            <i class="right fas fa-angle-down"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/vente/nouveau}">
+                                <i class="fas fa-plus-circle mx-4"></i>
+                                <p>Nouveau</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/vente}">
+                                <i class="fas fa-list mx-4"></i>
+                                <p>Liste</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
+                    <a class="nav-link" th:href="@{/}"
+                       th:classappend="${#httpServletRequest.requestURI=='/approvision/nouveau' or
+                        #httpServletRequest.requestURI=='/approvision'  or
+                        #httpServletRequest.requestURI=='/approvision/info'  }?'active':''">
+                        <i class="nav-icon fas fa-dolly "></i>
+                        <p>Approvision
+                            <i class="right fas fa-angle-down"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/approvision/nouveau}">
+                                <i class="fas fa-plus-circle mx-4"></i>
+                                <p>Nouveau</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/approvision}">
+                                <i class="fas fa-list mx-4"></i>
+                                <p>Liste</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-header" sec:authorize="hasAuthority('UTILISATEUR')">Gestion medicament</li>
+
+                <li class="nav-item"  sec:authorize="hasAuthority('UTILISATEUR')">
+                    <a class="nav-link" th:href="@{/}"
+                       th:classappend="${#httpServletRequest.requestURI=='/type/nouveau' or
+                        #httpServletRequest.requestURI=='/type/update'   or
+                        #httpServletRequest.requestURI=='/type'  }?'active':''">
+                        <i class="nav-icon fas fa-certificate"></i>
+                        <p>Type
+                            <i class="right fas fa-angle-down"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/type/nouveau}">
+                                <i class="fas fa-plus-circle mx-4"></i>
+                                <p>Nouveau</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/type}">
+                                <i class="fas fa-list mx-4"></i>
+                                <p>Liste</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
+                    <a class="nav-link" th:href="@{/}"
+                       th:classappend="${#httpServletRequest.requestURI=='/medicament/nouveau' or
+                        #httpServletRequest.requestURI=='/medicament/update' or
+                        #httpServletRequest.requestURI=='/medicament/details' or
+                        #httpServletRequest.requestURI=='/medicament'  }?'active':''">
+                        <i class="nav-icon fas fa-certificate"></i>
+                        <p>Medicament
+                            <i class="right fas fa-angle-down"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/medicament/nouveau}">
+                                <i class="fas fa-plus-circle mx-4"></i>
+                                <p>Nouveau</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/medicament}">
+                                <i class="fas fa-list mx-4"></i>
+                                <p>Liste</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-header" sec:authorize="hasAuthority('ROOT')">Gestion Stock</li>
+
+                <li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
+                    <a class="nav-link" th:href="@{/}"
+                       th:classappend="${#httpServletRequest.requestURI=='/pharmacie/nouveau' or
+                        #httpServletRequest.requestURI=='/pharmacie/update'  or
+                        #httpServletRequest.requestURI=='/pharmacie'  }?'active':''">
+                        <i class="nav-icon fas fa-store-alt "></i>
+                        <p>Pharmacie
+                            <i class="right fas fa-angle-down"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/pharmacie/nouveau}">
+                                <i class="fas fa-plus-circle mx-4"></i>
+                                <p>Nouveau</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/pharmacie}">
+                                <i class="fas fa-list mx-4"></i>
+                                <p>Liste</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
+                    <a class="nav-link" th:href="@{/}"
+                       th:classappend="${#httpServletRequest.requestURI=='/stock/nouveau' or
+                        #httpServletRequest.requestURI=='/stock/details' or
+                        #httpServletRequest.requestURI=='/stock'  }?'active':''">
+                        <i class="nav-icon fas fa-store"></i>
+                        <p>Stock
+                            <i class="right fas fa-angle-down"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/stock}">
+                                <i class="fas fa-list mx-4"></i>
+                                <p>Liste</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-header" sec:authorize="hasAuthority('UTILISATEUR')">Gestion Depense/Dette</li>
+                <!--<li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
+                    <a class="nav-link" th:href="@{/}"
+                       th:classappend="${
+                        #httpServletRequest.requestURI=='/depense/nouveau' or
+                        #httpServletRequest.requestURI=='/depense'  }?'active':''">
+                        <i class="nav-icon fas fa-money-check"></i>
+                        <p>Depense
+                            <i class="right fas fa-angle-down"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/depense}">
+                                <i class="fas fa-list mx-4"></i>
+                                <p>Liste</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
+                    <a class="nav-link" th:href="@{/}"
+                       th:classappend="${
+                        #httpServletRequest.requestURI=='/dette-client'  }?'active':''">
+                        <i class="nav-icon fas fa-money-check-alt"></i>
+                        <p>Dette
+                            <i class="right fas fa-angle-down"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/dette-client}">
+                                <i class="fas fa-list mx-4"></i>
+                                <p>Liste</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+-->
+                <li class="nav-header" sec:authorize="hasAuthority('UTILISATEUR')">Gestion Utilisateur</li>
+
+                <li class="nav-item" sec:authorize="hasAuthority('ADMINISTRATEUR')">
+                    <a class="nav-link" th:href="@{/}"
+                       th:classappend="${#httpServletRequest.requestURI=='/utilisateur/nouveau' or
+                        #httpServletRequest.requestURI=='/utilisateur/update' or
+                        #httpServletRequest.requestURI=='/utilisateur/info'  or
+                        #httpServletRequest.requestURI=='/utilisateur/audit' or
+                        #httpServletRequest.requestURI=='/utilisateur'  }?'active':''">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>Utilisateur
+                            <i class="right fas fa-angle-down"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/utilisateur/nouveau}">
+                                <i class="fas fa-user-plus mx-4"></i>
+                                <p>Nouveau</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/utilisateur}">
+                                <i class="fas fa-users mx-4"></i>
+                                <p>Liste</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <style th:replace="fragment/style"></style>
+
+    <title>Ajout Utilisaeur</title>
+
+</head>
+<body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
+<div class="wrapper">
+    <div th:replace="fragment/header"></div>
+
+
+    <div class="content-wrapper">
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row"
+                     th:if="${utilisateur.pharmacie.id}==${utilisateurActif.pharmacie.id}">
+                    <div class="col-lg-6 offset-3 my-2">
+
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h3 class="card-title">Informations Utilisateur</h3>
+                            </div>
+
+                            <!-- /.card-header -->
+
+                            <div class="card-body">
+
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Prenom</label>
+                                    <span class="col-lg-9 col-form-label" th:text="${utilisateur.prenom}"></span>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Nom</label>
+                                    <span class="col-lg-9 col-form-label" th:text="${utilisateur.nom}"></span>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Email</label>
+                                    <span class="col-lg-9 col-form-label" th:text="${utilisateur.email}"></span>
+
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Adresse</label>
+
+                                    <span class="col-lg-9 col-form-label" th:text="${utilisateur.adresse}"></span>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Telephone</label>
+
+                                    <span class="col-lg-9 col-form-label" th:text="${utilisateur.telephone}"></span>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label">Roles </label>
+                                    <span><span class="col-lg-9 col-form-label"
+                                                th:each="role : ${utilisateur.roles}"
+                                                th:text="${role.roleName}"></span>
+                                    </span>
+                                </div>
+
+                            </div>
+                            <!--Boutons-->
+                            <!-- /.card-body -->
+                            <div class="card-footer text-center">
+                                <button class="btn btn-dark" type="button"><i
+                                        class="fa fa-cancel"></i> <a th:href="${#httpServletRequest.requestURI==urlCurrent}
+                                        ?@{/utilisateur/}:@{/utilisateur/nouveau}"
+                                                                     th:with="urlCurrent=@{/utilisateur/details}">Retour</a>
+                                </button>
+                            </div>
+                            <!-- /.card-footer -->
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.card -->
+        </section>
+
+    </div>
+
+    <div th:replace="fragment/footer"></div>
+
+</div>
+</body>
+<script th:replace="fragment/script"></script>
+</html>

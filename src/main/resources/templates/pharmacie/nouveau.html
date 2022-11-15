@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <style th:replace="fragment/style"></style>
+
+    <title>Ajout Pharmacie</title>
+
+</head>
+<body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
+<div class="wrapper">
+    <div th:replace="fragment/header"></div>
+
+    <div class="content-wrapper">
+
+        <section class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-12 my-2">
+
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h3 class="card-title">Nouvelle Pharmacie</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form class="form-horizontal" method="post"
+                                  th:action="@{/pharmacie/nouveau}" th:object="${pharmacie}">
+                                <div class="card-body">
+                                    <input th:field="*{id}" type="hidden">
+                                    <div class="form-group row">
+                                        <label class="col-lg-2 col-form-label">Nom<span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-lg-10">
+                                            <input autofocus class="form-control " placeholder="Entre le nom" required
+                                                   th:field="*{nom}" type="text">
+                                            <span class="text-danger" th:errors="*{nom}"></span>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-2 col-form-label">Adresse<span class="text-danger">*</span></label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control " placeholder="Entre l'adresse"
+                                                   required th:field="*{adresse}" type="text">
+                                            <span class="text-danger" th:errors="*{adresse}"></span>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-2 col-form-label">Telephone<span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control " placeholder="Entre le numero de telephone"
+                                                   required th:field="*{telephone}" type="number">
+                                            <span class="text-danger" th:errors="*{telephone}"></span>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <!--Boutons-->
+                                <!-- /.card-body -->
+                                <div class="card-footer text-center">
+                                    <button class="btn btn-info" type="submit"><i class="fas fa-save"></i> Enregistre
+                                    </button>
+                                    <button class="btn btn-outline-danger" type="button"><i
+                                            class="fas fa-cancel"></i> <a th:href="@{/pharmacie}">Retour</a>
+                                    </button>
+                                </div>
+                                <!-- /.card-footer -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.card -->
+        </section>
+
+    </div>
+
+    <div th:replace="fragment/footer"></div>
+
+</div>
+</body>
+<script th:replace="fragment/script"></script>
+</html>

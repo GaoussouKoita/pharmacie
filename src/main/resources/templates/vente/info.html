@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <style th:replace="fragment/style"></style>
+
+    <title>Details Vente</title>
+
+</head>
+<body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
+<div class="wrapper">
+    <div th:replace="fragment/header"></div>
+
+    <div class="content-wrapper">
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row"
+                     th:if="${vente.pharmacie.id}==${utilisateurActif.pharmacie.id}">
+                    <div class="col-lg-8 offset-2 my-2">
+
+                        <div class="card card-info">
+
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i th:text="'Vente du '+${#temporals.format(date, 'E dd MMM yyyy')}"
+                                       th:with="date=${vente.date}"></i>
+                                    <i th:text="${#temporals.format(heure, 'HH:mm:ss')}"
+                                       th:with="heure=${vente.heure}"></i>
+                                </div>
+                                <div class="card-tools">
+                                    <h6 th:text="'Total : '+${#numbers.formatInteger(total,3,'POINT')}+' F CFA'"
+                                        th:with="total=${vente.montant}"></h6>
+
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-sm table-hover text-nowrap table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Designation</th>
+                                        <th>Quantite</th>
+                                        <th>Prix</th>
+                                        <th>Montant</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <tr th:each="medicament : ${ vente.medicaments }">
+                                        <td th:text="${ medicament.nom }"></td>
+                                        <td th:text="${ medicament.quantite }"></td>
+                                        <td th:text="${#numbers.formatInteger(prix,3,'POINT')}+' F CFA'"
+                                            th:with="prix = ${ medicament.prixVente }"></td>
+                                        <td th:text="${#numbers.formatInteger(montant,3,'POINT')}+' F CFA'"
+                                            th:with="prix=${ medicament.prixVente },
+                                        quantite=${ medicament.quantite }, montant=${prix * quantite} "></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button class="btn btn-outline-success" type="button"><i
+                                        class="fas fa-cancel"></i> <a th:href="@{/vente/nouveau}">Nouveau</a>
+                                </button>
+                                <button class="btn btn-outline-info" type="button"><i
+                                        class="fas fa-cancel"></i> <a th:href="@{/vente}">Liste</a>
+                                </button>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+
+        </section>
+
+
+</div>
+
+<div th:replace="fragment/footer"></div>
+</div>
+</div>
+</div>
+</body>
+<script th:replace="fragment/script"></script>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <style th:replace="fragment/style"></style>
+
+    <title>Details Approvision</title>
+
+</head>
+<body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
+<div class="wrapper">
+    <div th:replace="fragment/header"></div>
+
+    <div class="content-wrapper">
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row"
+                     th:if="${approvision.pharmacie.id}==${utilisateurActif.pharmacie.id}">
+                    <div class="col-lg-8 offset-2 my-2">
+
+                        <div class="card card-info">
+
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <i th:text="${#temporals.format(date, 'EEE dd MMM yyyy')}"
+                                       th:with="date=${approvision.date}"></i>
+                                    <i th:text="${#temporals.format(heure, 'HH:mm:ss')}"
+                                       th:with="heure=${approvision.heure}"></i>
+
+                                    <i th:text="'Montant : '+${#numbers.formatInteger(total,3,'POINT')}+' F CFA'"
+                                       th:with="total=${approvision.montant}"
+                                    ></i>
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-sm table-hover text-nowrap table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Medicament</th>
+                                        <th>Quantite</th>
+                                        <th>Prix</th>
+                                        <th>Montant</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <tr th:each="medicaments : ${ approvision.medicaments }">
+                                        <td th:text="${ medicaments.medicament.nom }"></td>
+                                        <td th:text="${ medicaments.quantite }"></td>
+                                        <td th:text="${#numbers.formatInteger(prix,3,'POINT')}+' F CFA'"
+                                            th:with="prix = ${ medicaments.prix }"></td>
+                                        <td th:text="${#numbers.formatInteger(montant,3,'POINT')}+' F CFA'"
+                                            th:with="prix=${ medicaments.prix },
+                                        quantite=${ medicaments.quantite }, montant=${prix * quantite} "></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer text-center">
+                                <button class="btn btn-outline-success" type="button"><i
+                                        class="fas fa-cancel"></i> <a th:href="@{/approvision/nouveau}">Nouveau</a>
+                                </button>
+                                <button class="btn btn-outline-info" type="button"><i
+                                        class="fas fa-cancel"></i> <a th:href="@{/approvision}">Liste</a>
+                                </button>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+
+        </section>
+
+
+    </div>
+
+    <div th:replace="fragment/footer"></div>
+</div>
+</div>
+</div>
+</body>
+<script th:replace="fragment/script"></script>
+</html>

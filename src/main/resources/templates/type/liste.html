@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <style th:replace="fragment/style"></style>
+    <title>Liste Types</title>
+</head>
+<body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
+<div class="wrapper">
+    <div th:replace="fragment/header"></div>
+
+    <div class="content-wrapper">
+
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12 my-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Liste Types</h3>
+                                <div class="card-tools">
+                                    <form class="navbar-form" method="post" th:action="@{/type/nouveau}"
+                                          th:object="${type}">
+                                        <div class="input-group input-group-sm">
+                                            <input th:field="*{id}" type="hidden">
+                                            <input autofocus class="form-control" placeholder="Entre le nom"
+                                                   required th:field="*{nom}" type="text">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-success" type="submit">
+                                                    <i class="fas fa-save"></i>
+                                                </button>
+                                            </div>
+
+
+                                            <button class="btn btn-tool" data-card-widget="collapse" title="Collapse"
+                                                    type="button">
+                                                <i class="fas fa-minus"></i>
+                                            </button>
+                                            <button class="btn btn-tool" data-card-widget="remove" title="Remove"
+                                                    type="button">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-body table-responsive p-0">
+                                    <table class="table table-sm table-hover text-nowrap table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>N°</th>
+                                            <th>Nom</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <tr th:each="type : ${ types }"
+                                            th:if="${type.pharmacie.id}==${utilisateurActif.pharmacie.id}">
+                                            <td th:text="${ type.id }"></td>
+                                            <td th:text="${ type.nom }"></td>
+                                            <td>
+                                                <a class="text-info" data-toggle="tooltip"
+                                                   th:href="@{/type/modifier/}+''+${type.id}"
+                                                   title="Modifier"><i
+                                                        class="fas fa-edit"></i></a>
+
+                                                <button class="btn" data-toggle="modal"
+                                                        th:attr="data-target='#modalSupp'+${type.id}" type="button">
+                                                    <i class="fas fa-trash-alt text-danger" data-toggle="tooltip"
+                                                       title="Supprimer"></i></i>
+                                                </button>
+                                                <div class="modal fade" th:attr="id='modalSupp'+${type.id}">
+                                                    <div class="modal-dialog modal-md">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header bg-danger">
+                                                                <h4 class="modal-title ">Suppression</h4>
+                                                                <button aria-label="Close" class="close"
+                                                                        data-dismiss="modal"
+                                                                        type="button">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <h1 class="text-center">Êtes-vous sûr ? </h1>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <a class="btn btn-outline-danger"
+                                                                   th:href="@{/type/supprimer/}+''+${type.id}"></i>
+                                                                    OUI</a>
+                                                                <button class="btn btn-outline-info"
+                                                                        data-dismiss="modal"
+                                                                        type="button">Non
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.modal-content -->
+                                                    </div>
+                                                    <!-- /.modal-dialog -->
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!--
+                                    Pagination:
+                                        On affiche une liste inline si le nombre de page <=3
+
+                                -->
+                                <div class="card-tools">
+
+                                    <ul class="pagination pagination-sm float-right" th:if="${totalElement}>6">
+
+                                        <th:block th:if="${nbTotalPage}<=3">
+                                            <li class="page-item" th:classappend="${currentPage}==0?'disabled'">
+                                                <a class="page-link"
+                                                   th:href="@{/type(page=${currentPage-1})}">&laquo;</a></li>
+
+                                            <li class="page-item"
+                                                th:classappend="${currentPage}==${status.index}?'active':''"
+                                                th:each="page, status : ${totalPage}">
+                                                <a class="page-link" th:href="@{/type(page=${status.index})}"
+                                                   th:text="${status.index+1}"></a>
+                                            </li>
+                                            <li class="page-item"
+                                                th:classappend="${currentPage}==${nbTotalPage-1}?'disabled'">
+                                                <a class="page-link"
+                                                   th:href="@{/type(page=${currentPage+1})}">&raquo;</a></li>
+
+                                        </th:block>
+
+                                        <th:block th:if="${nbTotalPage}>3">
+                                            <li class="page-item"
+                                                th:classappend="${currentPage}==${nbTotalPage-nbTotalPage}?'disabled':''">
+                                                <a class="page-link"
+                                                   th:href="@{/type(page=${currentPage-1})}">&laquo;</a></li>
+
+                                            <li class="page-item"
+                                                th:classappend="${currentPage}==${nbTotalPage-nbTotalPage}?'active':''">
+                                                <a class="page-link" th:href="@{/type(page=0)}"
+                                                   th:text="1"></a>
+                                            </li>
+                                            <li class="page-item"
+                                                th:classappend="${currentPage}==${nbTotalPage-nbTotalPage+1}?'active':''">
+                                                <a class="page-link" th:href="@{/type(page=1)}"
+                                                   th:text="2"></a>
+                                            </li>
+                                            <li class="page-item" th:if="${nbTotalPage}>5">
+                                                <a class="page-link" th:text="..."></a>
+                                            </li>
+
+
+                                            <li class="page-item"
+                                                th:classappend="${currentPage}==${nbTotalPage-2}?'active':''"
+                                                th:if="${nbTotalPage}>4">
+                                                <a class="page-link" th:href="@{/type(page=${nbTotalPage-2})}"
+                                                   th:text="${nbTotalPage-2}"></a>
+                                            </li>
+
+                                            <li class="page-item"
+                                                th:classappend="${currentPage}==${nbTotalPage-1}?'active':''">
+                                                <a class="page-link" th:href="@{/type(page=${nbTotalPage-1})}"
+                                                   th:text="${nbTotalPage-1}"></a>
+                                            </li>
+                                            <li class="page-item"
+                                                th:classappend="${currentPage}==${nbTotalPage-1}?'disabled'">
+                                                <a class="page-link"
+                                                   th:href="@{/type(page=${currentPage+1})}">&raquo;</a></li>
+
+                                        </th:block>
+                                    </ul>
+                                </div>                            <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div th:replace="fragment/footer"></div>
+</div>
+</body>
+<script th:replace="fragment/script"></script>
+</html>

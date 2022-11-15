@@ -1,0 +1,79 @@
+<nav class="main-header navbar navbar-expand bg-dark navbar-dark">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav" sec:authorize="hasAuthority('UTILISATEUR')">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a class="nav-link" th:href="@{/}" th:classappend="${#httpServletRequest.requestURI==urlCurrent}
+            ?'active text-info':''" th:with="urlCurrent=@{/}"><i class="fas fa-home"></i> Home</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a class="nav-link" th:classappend="${#httpServletRequest.requestURI==urlCurrent}
+              ?'active text-info':''" th:href="@{/vente}" th:with="urlCurrent=@{/vente}">Vente</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a class="nav-link" th:classappend="${#httpServletRequest.requestURI==urlCurrent}
+            ?'active text-info':''" th:href="@{/approvision}" th:with="urlCurrent=@{/approvision}">Approvision</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a class="nav-link" th:classappend="${#httpServletRequest.requestURI==urlCurrent}
+            ?'active text-info':''" th:href="@{/stock}" th:with="urlCurrent=@{/stock}">Stock</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a class="nav-link" th:classappend="${#httpServletRequest.requestURI==urlCurrent}
+            ?'active text-info':''" th:href="@{/type}" th:with="urlCurrent=@{/type}">Type</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block" sec:authorize="hasAuthority('ROOT')">
+            <a class="nav-link" th:classappend="${#httpServletRequest.requestURI==urlCurrent}
+            ?'active text-info':''" th:href="@{/pharmacie}" th:with="urlCurrent=@{/pharmacie}">Pharmacie</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a class="nav-link" th:classappend="${#httpServletRequest.requestURI==urlCurrent}
+            ?'active text-info':''" th:href="@{/medicament}" th:with="urlCurrent=@{/medicament}">Medicament</a>
+        </li> <li class="nav-item d-none d-sm-inline-block">
+            <a class="nav-link" th:classappend="${#httpServletRequest.requestURI==urlCurrent}
+            ?'active text-info':''" th:href="@{/utilisateur}" th:with="urlCurrent=@{/utilisateur}">Utilisateur</a>
+        </li>
+
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto" sec:authorize="isAuthenticated()">
+
+        <li class="nav-item dropdown">
+
+
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i class="fas fa-user-tie text-info">
+                </i>
+            </a>
+
+
+            <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="#">
+                    <div class="text-center mb-1">
+                        <i class="fas fa-user-alt fa-4x text-success"></i>
+                    </div>
+                    <div class="text-success text-center mb-1"
+                         th:text="${utilisateurActif.prenom}+' ' +${utilisateurActif.nom}">
+                    </div>
+                </a>
+                  <ol class="dropdown-divider"></ol>
+                <a class="dropdown-item" th:href="@{/utilisateur/password}">
+                    <i class="fas fa-lock"></i><span> Changer Password</span>
+                </a>
+
+                <form method="post" th:action="@{/logout}" th:hiden="true">
+                    <button class="btn btn-link"><i class="fas fa-sign-out-alt text-danger"></i>
+                        <span class="text-danger"> Deconnexion</span></button>
+                </form>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                <i class="fas fa-expand-arrows-alt"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
