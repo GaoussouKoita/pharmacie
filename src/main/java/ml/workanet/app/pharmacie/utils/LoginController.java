@@ -13,6 +13,6 @@ public class LoginController {
     @GetMapping(Endpoint.LOGIN)
     public String login() {
         log.info("Page d'Authentification");
-        return "login";
+        return "acceuil/login";
     }
 }

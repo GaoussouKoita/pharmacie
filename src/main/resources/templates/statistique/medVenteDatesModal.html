@@ -1,10 +1,10 @@
-<div class="modal fade" id="modalVenteBetween">
+<div class="modal fade" id="modalVenteDates">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Details Produits Vendus
-                    <i th:text="${#temporals.format( dateDebut, 'E dd MMM yyyy')}+' - '+
-                            ${#temporals.format( dateFin, 'E dd MMM yyyy')}"
+                <h4 class="modal-title">Details Medicaments Vendus
+                    <i th:text="${#temporals.format( dateDebut, 'EEEE dd MMMM yyyy')}+' - '+
+                            ${#temporals.format( dateFin, 'EEEE dd MMMM yyyy')}"
                        th:with="dateDebut=${dateDebut}, dateFin=${dateFin}"
                     ></i>
                 </h4>
@@ -17,18 +17,16 @@
                 <table class="table table-sm table-hover text-nowrap table-striped">
                     <thead>
                     <tr>
-                        <th>Designation</th>
+                        <th>Medicament</th>
                         <th>Quantite</th>
                         <th>Prix</th>
-                        <th>Prix Engros</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="io_p : ${ io_prodVenteBetween }">
-                        <td th:text="${ io_p.produit.nom }"></td>
-                        <td th:text="${ io_p.quantite }"></td>
-                        <td th:text="${ io_p.produit.prix }"></td>
-                        <td th:text="${ io_p.produit.prixEngros }"></td>
+                    <tr th:each="medicaments : ${ medVenduDates }">
+                        <td th:text="${ medicaments.medicament.nom }"></td>
+                        <td th:text="${ medicaments.quantite }"></td>
+                        <td th:text="${ medicaments.medicament.prixVente }"></td>
                     </tr>
                     </tbody>
                 </table>

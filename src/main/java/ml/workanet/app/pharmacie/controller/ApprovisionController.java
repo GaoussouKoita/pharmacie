@@ -72,18 +72,16 @@ public class ApprovisionController {
     }
 
     @GetMapping(Endpoint.DETAILS)
-    public String rechercherApprovision(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam(defaultValue = "0") int page, Model model) {
-        log.info("Lister Approvisions par Date : " + date);
-        /*Page<Approvision> approvisionPage = service.listeDate(date, page);
-        model.addAttribute("approvisions", approvisionPage.getContent());
+    public String rechercherApprovisionEntreDates(@RequestParam
+       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateDebut,
+       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFin,
+       @RequestParam(defaultValue = "0") int page, Model model) {
+        log.info("Lister Approvisions entre Dates : " + dateDebut+"-"+dateFin);
+        Page<Approvision> approvisionPage = service.listerEntreDates( dateDebut, dateFin, page,Constante.NBRE_PAR_PAGE);
 
-        model.addAttribute("totalElement", approvisionPage.getTotalElements());
-        model.addAttribute("totalPage", new int[approvisionPage.getTotalPages()]);
-        model.addAttribute("nbTotalPage", approvisionPage.getTotalPages());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("utilisateurActif", accountService.utilisateurActif());
-*/
-        return "approvision/details";
+        pagination(approvisionPage,page, model);
+
+        return "approvision/liste";
     }
 
     @GetMapping
@@ -91,16 +89,19 @@ public class ApprovisionController {
         log.info("Listes Approvisions");
 
         Page<Approvision> approvisionPage = service.lister(page, Constante.NBRE_PAR_PAGE);
-        model.addAttribute("approvisions", approvisionPage.getContent());
+        pagination(approvisionPage, page, model);
+        return "approvision/liste";
+    }
 
+
+    private void pagination(Page<Approvision> approvisionPage, int page, Model model) {
+
+        model.addAttribute("approvisions", approvisionPage.getContent());
         model.addAttribute("totalElement", approvisionPage.getTotalElements());
         model.addAttribute("totalPage", new int[approvisionPage.getTotalPages()]);
         model.addAttribute("nbTotalPage", approvisionPage.getTotalPages());
         model.addAttribute("currentPage", page);
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
 
-        return "approvision/liste";
     }
-
-
 }

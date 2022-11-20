@@ -1,0 +1,19 @@
+<div th:class="${#httpServletRequest.requestURI=='/'}?'col-6 mt-2':'col-12'">
+    <div class="info-box mb-3" >
+                            <span class="info-box-icon bg-success elevation-1"><i
+                                    class="fas fa-money-bill-alt"></i></span>
+        <div class="info-box-content">
+            <span class="info-box-text"><i class="text-success"
+                                           th:text="${#httpServletRequest.requestURI=='/'}?
+                   ${utilisateurActif.prenom}+' ' +${utilisateurActif.nom}">
+            </i>
+                <b th:text="${#dates.format(#dates.createNow(), 'EEEE dd MMMM yyyy')}"></b></span>
+
+            <i class="info-box-number"
+               th:text="${#numbers.formatInteger(totalVente,3,'POINT')}+' F CFA'"
+               th:with="totalVente=${totalVente}"></i>
+        </div>
+        <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+</div>

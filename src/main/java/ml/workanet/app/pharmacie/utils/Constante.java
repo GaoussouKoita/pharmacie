@@ -6,7 +6,7 @@ public interface Constante {
 
     String ROOT_ROLE="ROOT";
     String ADMINISTRATEUR_ROLE="ADMINISTRATEUR";
-    String UTILISATEUR_ROLE="UTILISATEUR";
+    String EMPLOYE_ROLE ="EMPLOYE";
 
 
     String SESSION_ID = "JSESSIONID";

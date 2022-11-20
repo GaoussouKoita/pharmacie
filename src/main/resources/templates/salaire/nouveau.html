@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <title>Salaire</title>
+    <th:block th:replace="fragment/style.html"></th:block>
+
+</head>
+<body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
+<div class="wrapper">
+    <div th:replace="fragment/header"></div>
+
+    <div class="content-wrapper">
+
+        <!--Formulaire-->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 my-2">
+
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h3 class="card-title" th:if=" ${#httpServletRequest.requestURI=='/salaire/nouveau'}">
+                                    Nouveau salaire</h3>
+                                <h3 class="card-title" th:unless=" ${#httpServletRequest.requestURI=='/salaire/nouveau'}">
+                                    Modification salaire</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form class="form-horizontal" enctype="multipart/form-data"
+                                  method="post" th:action="@{/salaire/nouveau}"
+                                  th:object="${salaire}">
+                                <div class="card-body">
+
+                                    <input th:field="*{id}" type="hidden">
+
+                                    <div class="form-group row">
+                                        <label class="col-lg-2">Employé</label>
+                                        <div class="col-lg-10">
+                                            <select class="form-control select2bs4" style="width: 100%;"
+                                                    th:field="*{utilisateur.id}">
+                                                <option th:each="utilisateur:${utilisateurs}"
+                                                        th:if="${utilisateur.pharmacie.id}==${utilisateurActif.pharmacie.id}"
+                                                        th:text="${utilisateur.prenom}+' '+${utilisateur.nom} "
+                                                        th:value="${utilisateur.id}">
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-lg-2 col-form-label">Periode<span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-lg-10">
+                                            <input autofocus class="form-control" placeholder="Entre le nom"
+                                                   required th:field="*{mois}" type="month">
+                                            <span class="text-danger" th:errors="*{mois}"></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-lg-2 col-form-label">Montant<span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-lg-10">
+                                            <input autofocus class="form-control" placeholder="Entre le montant"
+                                                   required th:field="*{montant}" type="number">
+                                            <span class="text-danger" th:errors="*{montant}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Boutons-->
+                                <!-- /.card-body -->
+                                <div class="card-footer text-center">
+                                    <button class="btn btn-info" type="submit"><i class="fas fa-save"></i> Enregistre
+                                    </button>
+                                    <button class="btn btn-outline-danger" type="button"><i
+                                            class="fa fa-cancel"></i> <a th:href="@{/salaire}">Annuler</a>
+                                    </button>
+                                </div>
+                                <!-- /.card-footer -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.card -->
+        </section>
+
+    </div>
+
+    <div th:replace="fragment/footer"></div>
+
+</div>
+</body>
+<script th:replace="fragment/script"></script>
+</html>

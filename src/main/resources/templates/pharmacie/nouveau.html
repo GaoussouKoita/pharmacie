@@ -3,7 +3,7 @@
 <head>
     <style th:replace="fragment/style"></style>
 
-    <title>Ajout Pharmacie</title>
+    <title>Pharmacie</title>
 
 </head>
 <body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
@@ -20,7 +20,10 @@
 
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title">Nouvelle Pharmacie</h3>
+                                <h3 class="card-title" th:if=" ${#httpServletRequest.requestURI=='/pharmacie/nouveau'}">
+                                    Nouvelle Pharmacie</h3>
+                                <h3 class="card-title" th:unless=" ${#httpServletRequest.requestURI=='/pharmacie/nouveau'}">
+                                    Modification Pharmacie</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->

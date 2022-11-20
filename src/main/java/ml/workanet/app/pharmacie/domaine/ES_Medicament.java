@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 @Data
@@ -15,7 +16,7 @@ public class ES_Medicament {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int quantite;
-    private float prix;
+    private long prix;
     @ManyToOne
     private Medicament medicament;
 

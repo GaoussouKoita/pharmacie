@@ -1,0 +1,27 @@
+<div th:class="${#httpServletRequest.requestURI=='/'}?'col-6 mt-2':'col-12'">
+    <div class="info-box">
+                            <span class="info-box-icon bg-info elevation-1">
+                                <i class="fas fa-shopping-cart"></i>
+                            </span>
+        <div class="info-box-content">
+            <span class="info-box-text" >
+                <i class="text-success"
+                   th:text="${#httpServletRequest.requestURI=='/'}?
+                   ${utilisateurActif.prenom}+' ' +${utilisateurActif.nom}">
+                </i>
+            <b th:text="${#dates.format(#dates.createNow(), 'EEEE dd MMMM yyyy')}"></b>
+            </span>
+            <em class="info-box-number" th:text="${nbreMedVendu}+' Produits Vendus'" ></em>
+            <!-- Modal-->
+
+            <button  class="btn"
+                    data-target="#modalVente" data-toggle="modal" type="button">
+                <i class="fas fa-list-alt text-info"> Medicaments</i>
+            </button>
+
+            <div th:replace="acceuil/medVenteModal.html"></div>
+        </div>
+        <!-- /.info-box-content -->
+    </div>
+    <!-- /.info-box -->
+</div>

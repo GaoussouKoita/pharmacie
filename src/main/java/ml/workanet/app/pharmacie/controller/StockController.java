@@ -41,7 +41,7 @@ public class StockController {
     public String rechercher(@RequestParam(defaultValue = "0") int page, @RequestParam String nom, Model model) {
         log.info("Liste Stock par nom : " + nom);
 
-        Page<Stock> stockPage = service.listeProdNom(nom, page);
+        Page<Stock> stockPage = service.listerProdNom(nom, page);
         model.addAttribute("stocks", stockPage.getContent());
 
         model.addAttribute("totalElement", stockPage.getTotalElements());

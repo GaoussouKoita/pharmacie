@@ -1,0 +1,51 @@
+<div class="col-6">
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title">Ventes par Intervalle de Date</h3>
+            <div class="card-tools">
+                <button class="btn btn-tool" data-card-widget="collapse" title="Collapse"
+                        type="button">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="btn btn-tool" data-card-widget="remove" title="Remove"
+                        type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <form class="navbar-form navbar-right" method="GET"
+                  th:action="@{/statistique/details}">
+                <div class="form-group">
+                    <i class="mr-2">Du</i>
+                    <input class="form-control-sm" name="dateDebut"
+                           required type="date">
+                    <i class="mx-2">Au</i>
+                    <input class="form-control-sm"
+                           name="dateFin"
+                           required type="date">
+                    <button class="btn btn-sm btn-default ml-2" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card-footer text-center" th:if="${dateDebut} and ${dateFin}">
+            <h4 th:text="${#temporals.format(dateDebut, 'EEEE dd MMMM yyyy') }+' - '+${#temporals.format(dateFin, 'EEEE dd MMMM yyyy') }"></h4>
+            <b class="mr-5">Total: <i class="info-box-number text-success "
+                                      th:text="${#numbers.formatInteger(totalVente,3,'POINT')}+' F CFA'"
+                                      th:with="totalVente=${totalVenteDates}"></i></b>
+            <b>Nombre de produits: <i class="info-box-number"
+                                      th:text="${nbMedDates}"></i></b>
+            <button class="btn" data-target="#modalVenteDates" data-toggle="modal" type="button">
+                <i class="fas fa-list-alt text-info"> Medicaments</i>
+            </button>
+
+            <div th:replace="statistique/medVenteDatesModal"></div>
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>

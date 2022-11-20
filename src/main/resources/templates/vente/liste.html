@@ -53,7 +53,7 @@
                                         <th>Date</th>
                                         <th>Heure</th>
                                         <th>Montant</th>
-                                        <th>Remise</th>
+                                        <th>Part Assureur</th>
                                         <th>Utilisateur</th>
                                         <th sec:authorize="hasAuthority('ADMINISTRATEUR')">Action</th>
                                     </tr>
@@ -64,10 +64,10 @@
                                         <td th:text="${#temporals.format(vente.date, 'EEE dd MMM yyyy') }"></td>
                                         <td th:text="${ vente.heure }"></td>
                                         <td th:text="${ vente.montant }"></td>
-                                        <td th:text="${ vente.remise }"></td>
+                                        <td th:text="${ vente.partAssureur }"></td>
 
                                         <td
-                                                th:text="${vente.user.prenom}+' '+${vente.user.nom}+' | '+ ${vente.user.telephone}">
+                                                th:text="${vente.utilisateur.prenom}+' '+${vente.utilisateur.nom}">
                                         </td>
                                         <td sec:authorize="hasAuthority('ADMINISTRATEUR')">
                                             <a class="text-info" th:href="@{/vente/info/}+''+${vente.id}">
@@ -117,26 +117,24 @@
 
                         -->
                             <div class="card-tools">
-                                <ul class="pagination pagination-sm float-left ml-5">
-                                </ul>
-                                <ul class="pagination pagination-sm float-right" th:if="${totalElement}>6">
+                                <ul class="pagination pagination-sm float-right" th:if="${totalElement}>6 and ${#httpServletRequest.requestURI=='/vente'}">
 
                                     <th:block th:if="${nbTotalPage}<=3">
                                         <li class="page-item" th:classappend="${currentPage}==0?'disabled'">
                                             <a class="page-link"
-                                               th:href="@{/vente/liste(page=${currentPage-1})}">&laquo;</a>
+                                               th:href="@{/vente(page=${currentPage-1})}">&laquo;</a>
                                         </li>
 
                                         <li class="page-item"
                                             th:classappend="${currentPage}==${status.index}?'active':''"
                                             th:each="page, status : ${totalPage}">
-                                            <a class="page-link" th:href="@{/vente/liste(page=${status.index})}"
+                                            <a class="page-link" th:href="@{/vente(page=${status.index})}"
                                                th:text="${status.index+1}"></a>
                                         </li>
                                         <li class="page-item"
                                             th:classappend="${currentPage}==${nbTotalPage-1}?'disabled'">
                                             <a class="page-link"
-                                               th:href="@{/vente/liste(page=${currentPage+1})}">&raquo;</a>
+                                               th:href="@{/vente(page=${currentPage+1})}">&raquo;</a>
                                         </li>
 
                                     </th:block>
@@ -145,16 +143,16 @@
                                         <li class="page-item"
                                             th:classappend="${currentPage}==${nbTotalPage-nbTotalPage}?'disabled':''">
                                             <a class="page-link"
-                                               th:href="@{/vente/liste(page=${currentPage-1})}">&laquo;</a>
+                                               th:href="@{/vente(page=${currentPage-1})}">&laquo;</a>
                                         </li>
 
                                         <li class="page-item"
                                             th:classappend="${currentPage}==${nbTotalPage-nbTotalPage}?'active':''">
-                                            <a class="page-link" th:href="@{/vente/liste(page=0)}" th:text="1"></a>
+                                            <a class="page-link" th:href="@{/vente(page=0)}" th:text="1"></a>
                                         </li>
                                         <li class="page-item"
                                             th:classappend="${currentPage}==${nbTotalPage-nbTotalPage+1}?'active':''">
-                                            <a class="page-link" th:href="@{/vente/liste(page=1)}" th:text="2"></a>
+                                            <a class="page-link" th:href="@{/vente(page=1)}" th:text="2"></a>
                                         </li>
                                         <li class="page-item" th:if="${nbTotalPage}>5">
                                             <a class="page-link" th:text="..."></a>
@@ -164,19 +162,66 @@
                                         <li class="page-item"
                                             th:classappend="${currentPage}==${nbTotalPage-2}?'active':''"
                                             th:if="${nbTotalPage}>4">
-                                            <a class="page-link" th:href="@{/vente/liste(page=${nbTotalPage-2})}"
+                                            <a class="page-link" th:href="@{/vente(page=${nbTotalPage-2})}"
                                                th:text="${nbTotalPage-2}"></a>
                                         </li>
 
                                         <li class="page-item"
                                             th:classappend="${currentPage}==${nbTotalPage-1}?'active':''">
-                                            <a class="page-link" th:href="@{/vente/liste(page=${nbTotalPage-1})}"
+                                            <a class="page-link" th:href="@{/vente(page=${nbTotalPage-1})}"
                                                th:text="${nbTotalPage-1}"></a>
                                         </li>
                                         <li class="page-item"
                                             th:classappend="${currentPage}==${nbTotalPage-1}?'disabled'">
                                             <a class="page-link"
-                                               th:href="@{/vente/liste(page=${currentPage+1})}">&raquo;</a>
+                                               th:href="@{/vente(page=${currentPage+1})}">&raquo;</a>
+                                        </li>
+
+                                    </th:block>
+                                </ul>
+
+                                <ul class="pagination pagination-sm float-right"
+                                    th:if="${totalElement}>6 and ${#httpServletRequest.requestURI=='/vente/details'}">
+
+                                    <th:block th:if="${nbTotalPage}<=3">
+                                        <li class="page-item" th:classappend="${currentPage}==0?'disabled'">
+                                            <a class="page-link" th:href="@{/vente/details(date=${date}, page=${currentPage-1})}">&laquo;</a>
+                                        </li>
+
+                                        <li class="page-item" th:classappend="${currentPage}==${status.index}?'active':''"
+                                            th:each="page, status : ${totalPage}">
+                                            <a class="page-link" th:href="@{/vente/details(date=${date}, page=${status.index})}" th:text="${status.index+1}"></a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-1}?'disabled'">
+                                            <a class="page-link" th:href="@{/vente/details(date=${date}, page=${currentPage+1})}">&raquo;</a>
+                                        </li>
+
+                                    </th:block>
+
+                                    <th:block th:if="${nbTotalPage}>3">
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-nbTotalPage}?'disabled':''">
+                                            <a class="page-link" th:href="@{/vente/details(date=${date}, page=${currentPage-1})}">&laquo;</a>
+                                        </li>
+
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-nbTotalPage}?'active':''">
+                                            <a class="page-link" th:href="@{/vente/details(date=${date}, page=0)}" th:text="1"></a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-nbTotalPage+1}?'active':''">
+                                            <a class="page-link" th:href="@{/vente/details(date=${date}, page=1)}" th:text="2"></a>
+                                        </li>
+                                        <li class="page-item" th:if="${nbTotalPage}>5">
+                                            <a class="page-link" th:text="..."></a>
+                                        </li>
+
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-2}?'active':''" th:if="${nbTotalPage}>4">
+                                            <a class="page-link" th:href="@{/vente/details(date=${date}, page=${nbTotalPage-2})}" th:text="${nbTotalPage-2}"></a>
+                                        </li>
+
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-1}?'active':''">
+                                            <a class="page-link" th:href="@{/vente/details(date=${date}, page=${nbTotalPage-1})}" th:text="${nbTotalPage-1}"></a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-1}?'disabled'">
+                                            <a class="page-link" th:href="@{/vente/details(date=${date}, page=${currentPage+1})}">&raquo;</a>
                                         </li>
 
                                     </th:block>

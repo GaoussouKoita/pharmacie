@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Controller
 @Slf4j
 @RequestMapping(Endpoint.MEDICAMENT)
@@ -36,7 +38,7 @@ public class MedicamentController {
 
 
     @PostMapping(Endpoint.NOUVEAU)
-    public String ajouterMedicament(@ModelAttribute Medicament medicament, Model model) {
+    public String ajouterMedicament(@ModelAttribute @Valid Medicament medicament, Model model) {
         log.info("Ajout Medicament : " + medicament);
         model.addAttribute("medicament", service.ajouter(medicament));
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
@@ -45,8 +47,8 @@ public class MedicamentController {
 
     @GetMapping(Endpoint.MODIFICATION + Endpoint.ID)
     public String modifierMedicament(@PathVariable Long id, Model model) {
-        log.info("Formulaire modification Medicament : " + service.rechercher(id));
-        model.addAttribute("medicament", service.rechercher(id));
+        log.info("Formulaire modification Medicament : " + service.listerParNom(id));
+        model.addAttribute("medicament", service.listerParNom(id));
         model.addAttribute("types", typeService.lister());
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
         return "medicament/nouveau";
@@ -54,7 +56,7 @@ public class MedicamentController {
 
     @GetMapping(Endpoint.SUPPRESSION + Endpoint.ID)
     public String supprimerMedicament(@PathVariable Long id, Model model) {
-        log.info("Suppression Medicament : " + service.rechercher(id));
+        log.info("Suppression Medicament : " + service.listerParNom(id));
         service.supprimer(id);
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
         return "redirect:/medicament";
@@ -71,8 +73,8 @@ public class MedicamentController {
 
     @GetMapping(Endpoint.INFO + Endpoint.ID)
     public String infoMedicament(@PathVariable Long id, Model model) {
-        log.info("Info Medicament : " + service.rechercher(id));
-        model.addAttribute("medicament", service.rechercher(id));
+        log.info("Info Medicament : " + service.listerParNom(id));
+        model.addAttribute("medicament", service.listerParNom(id));
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
         return "medicament/info";
     }
@@ -80,10 +82,10 @@ public class MedicamentController {
     @GetMapping(Endpoint.DETAILS)
     public String detailsMedicament(@RequestParam String nom, @RequestParam(defaultValue = "0") int page, Model model) {
         log.info("Recherche Medicament par nom : " + nom);
-        Page<Medicament> medicamentPage = service.rechercher(nom, page, Constante.NBRE_PAR_PAGE);
+        Page<Medicament> medicamentPage = service.listerParNom(nom, page, Constante.NBRE_PAR_PAGE);
 
         pagination(medicamentPage, page, model);
-        return "medicament/details";
+        return "medicament/liste";
     }
 
 

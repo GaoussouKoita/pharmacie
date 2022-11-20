@@ -1,0 +1,35 @@
+<div th:class="${#httpServletRequest.requestURI=='/'}?'col-12':'col-6'">
+    <div class="card card-danger">
+        <div class="card-header">
+            <h3 class="card-title">Medicaments en Rupture de Stock</h3>
+            <div class="card-tools">
+                <button class="btn btn-tool" data-card-widget="collapse" title="Collapse"
+                        type="button">
+                    <i class="fas fa-minus"></i>
+                </button>
+                <button class="btn btn-tool" data-card-widget="remove" title="Remove"
+                        type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <p th:text="${#arrays.isEmpty(stocks)}?'Aucun Medicament en rupture de stock'"
+           class="text-center text-success my-1" th:with="stocks=${stocks}"></p>
+        <div class="card-body scroll pt-1" th:unless="${#arrays.isEmpty(stocks)}">
+            <th:block th:each="stock : ${stocks}" >
+                                    <span  th:class="${stock.quantite}<50?'text-danger':'text-warning'"
+                                           th:text="${stock.medicament.type.nom}+' '+${stock.medicament.nom}">
+                                    </span>
+                <b th:class="${stock.quantite}<50?'text-danger':'text-warning'"
+                   th:text="' : '+${stock.quantite}"></b>
+                <i th:class="${stock.quantite}<50?'text-danger':'text-warning'"
+                   th:text="' restants à '+${stock.pharmacie.nom}+' '
+                                       +${stock.pharmacie.adresse}"></i>
+
+                <br/>
+            </th:block>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</div>

@@ -19,7 +19,10 @@
 
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title">Nouveau Medicament</h3>
+                                <h3 class="card-title" th:if=" ${#httpServletRequest.requestURI=='/medicament/nouveau'}">
+                                    Nouveau Medicament</h3>
+                                <h3 class="card-title" th:unless=" ${#httpServletRequest.requestURI=='/medicament/nouveau'}">
+                                    Modification Medicament</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
@@ -35,8 +38,9 @@
                                         <div class="col-lg-10">
                                             <select class="form-control select2bs4" style="width: 100%;"
                                                     th:field="*{type.id}">
-                                                <option th:each="type:${types}" th:text="${type.nom}"
+                                                <option th:each="type:${types}"
                                                         th:if="${type.pharmacie.id}==${utilisateurActif.pharmacie.id}"
+                                                        th:text="${type.nom}"
                                                         th:value="${type.id}">
                                                 </option>
                                             </select>
@@ -99,7 +103,7 @@
                                         <div class="col-lg-10">
                                             <div class="form-check">
                                                 <input class="form-check-input" th:field="*{prisEnCharge}" type="radio"
-                                                       value=1 >
+                                                       value=1>
                                                 <label class="form-check-label mr-5">OUI</label>
 
                                                 <input checked class="form-check-input" th:field="*{prisEnCharge}"

@@ -46,12 +46,12 @@
                                     <tbody>
 
                                     <tr th:each="medicament : ${ vente.medicaments }">
-                                        <td th:text="${ medicament.nom }"></td>
+                                        <td th:text="${ medicament.medicament.nom }"></td>
                                         <td th:text="${ medicament.quantite }"></td>
                                         <td th:text="${#numbers.formatInteger(prix,3,'POINT')}+' F CFA'"
-                                            th:with="prix = ${ medicament.prixVente }"></td>
+                                            th:with="prix = ${ medicament.medicament.prixVente }"></td>
                                         <td th:text="${#numbers.formatInteger(montant,3,'POINT')}+' F CFA'"
-                                            th:with="prix=${ medicament.prixVente },
+                                            th:with="prix=${ medicament.medicament.prixVente },
                                         quantite=${ medicament.quantite }, montant=${prix * quantite} "></td>
                                     </tr>
                                     </tbody>

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import ml.workanet.app.pharmacie.domaine.Pharmacie;
 import ml.workanet.app.pharmacie.securite.service.AccountService;
 import ml.workanet.app.pharmacie.service.PharmacieService;
+import ml.workanet.app.pharmacie.utils.Constante;
 import ml.workanet.app.pharmacie.utils.Endpoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,10 +53,10 @@ public class PharmacieController {
     }
 
     @GetMapping
-    public String listePharmacie(Model model) {
+    public String listePharmacie(@RequestParam(defaultValue = "0") int page, Model model) {
         log.info(" Liste Pharmacie");
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
-        model.addAttribute("pharmacies", service.lister(0, 5));
+        model.addAttribute("pharmacies", service.lister(page, Constante.NBRE_PAR_PAGE));
         return "pharmacie/liste";
     }
 

@@ -47,9 +47,9 @@ public class SecuriteConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.
                 authorizeRequests().antMatchers(Endpoint.WHITE_LIST).permitAll().
-                and().authorizeRequests().antMatchers(Endpoint.ROOT_ROLE_ACCESS).hasAuthority(Constante.ROOT_ROLE).
+                and().authorizeRequests().antMatchers(Endpoint.EMPLOYE_ROLE_ACCESS).hasAuthority(Constante.EMPLOYE_ROLE).
                 and().authorizeRequests().antMatchers(Endpoint.ADMINSTRATEUR_ROLE_ACCESS).hasAuthority(Constante.ADMINISTRATEUR_ROLE).
-                and().authorizeRequests().antMatchers(Endpoint.UTILISATEUR_ROLE_ACCESS).hasAuthority(Constante.UTILISATEUR_ROLE).
+                and().authorizeRequests().antMatchers(Endpoint.ROOT_ROLE_ACCESS).hasAuthority(Constante.ROOT_ROLE).
                 and().authorizeRequests().anyRequest().authenticated().
                 and().formLogin().loginPage(Endpoint.LOGIN).permitAll();
         /*.

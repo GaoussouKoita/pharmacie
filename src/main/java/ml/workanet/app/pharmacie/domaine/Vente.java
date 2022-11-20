@@ -7,6 +7,7 @@ import ml.workanet.app.pharmacie.securite.entity.Utilisateur;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -21,8 +22,9 @@ public class Vente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int nbreMedicament;
-    private float montant;
-    private float partAssureur;
+    @Min(value = 5, message = "Le montant doit être superieur à 5")
+    private long montant;
+    private long partAssureur;
     private boolean type;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

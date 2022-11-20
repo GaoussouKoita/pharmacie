@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="www.thymeleaf.org">
 <head>
-    <title>Nouveau Type</title>
+    <title>Type</title>
     <th:block th:replace="fragment/style.html"></th:block>
 
 </head>
@@ -19,7 +19,10 @@
 
                         <div class="card card-info">
                             <div class="card-header">
-                                <h3 class="card-title">Nouveau Type</h3>
+                                < <h3 class="card-title" th:if=" ${#httpServletRequest.requestURI=='/type/nouveau'}">
+                                Nouveau Type</h3>
+                                <h3 class="card-title" th:unless=" ${#httpServletRequest.requestURI=='/type/nouveau'}">
+                                    Modification Type</h3>
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->

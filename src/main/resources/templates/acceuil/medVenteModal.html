@@ -2,8 +2,8 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Details Produits Vendus
-                    <i th:text="${#dates.format(#dates.createNow(), 'E dd MMM yyyy')}"></i>
+                <h4 class="modal-title">Details Medicaments Vendus
+                    <i th:text="${#dates.format(#dates.createNow(), 'EEEE dd MMMM yyyy')}"></i>
                 </h4>
                 <button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -17,15 +17,13 @@
                         <th>Designation</th>
                         <th>Quantite</th>
                         <th>Prix</th>
-                        <th>Prix Engros</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="io_p : ${ io_produits }">
-                        <td th:text="${ io_p.produit.nom }"></td>
-                        <td th:text="${ io_p.quantite }"></td>
-                        <td th:text="${ io_p.produit.prix }"></td>
-                        <td th:text="${ io_p.produit.prixEngros }"></td>
+                    <tr th:each="medicaments : ${ medicaments }">
+                        <td th:text="${ medicaments.medicament.nom }"></td>
+                        <td th:text="${ medicaments.quantite }"></td>
+                        <td th:text="${ medicaments.medicament.prixVente }"></td>
                     </tr>
                     </tbody>
                 </table>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <title>Satistique</title>
+    <th:block th:replace="fragment/style.html"></th:block>
+
+</head>
+<body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
+<div class="wrapper">
+    <div th:replace="fragment/header"></div>
+
+    <div class="content-wrapper">
+
+        <section class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-6 mt-2">
+                        <th:block th:if="${#arrays.length(medicaments)} > 0 or ${medVenduDates} != null"
+                                  th:with="medicaments = ${medicaments}">
+
+                            <!-- ./Histogramme -->
+
+                            <div class="card card-info">
+                                <div class="card-header ">
+                                    <h3 class="card-title">Medicaments vendus par quantite
+                                        <span th:text="${#httpServletRequest.requestURI=='/statistique'}?
+                                            ${#dates.format(#dates.createNow(), 'EEEE dd MMMM yyyy')}"></span>
+                                        <span th:text="${#httpServletRequest.requestURI=='/statistique/details'}?
+                                            ${#temporals.format(dateDebut, 'EEEE dd MMMM yyyy') }+' - '
+                                            +${#temporals.format(dateFin, 'EEEE dd MMMM yyyy') }"></span></h3>
+                                    <div class="card-tools">
+                                        <button class="btn btn-tool" data-card-widget="collapse" type="button">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button class="btn btn-tool" data-card-widget="remove" type="button">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <p class="d-flex flex-column">
+                                            <span>Quantites</span>
+                                        </p>
+                                    </div>
+                                    <!-- /.d-flex -->
+
+
+                                    <div class="position-relative mb-4">
+                                        <canvas height="340" id="chart-vente"></canvas>
+                                    </div>
+
+                                    <div class="d-flex flex-row justify-content-end">
+                                        <span class="mr-2">Medicament</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card -->
+                        </th:block>
+                    </div>
+                    <div class="col-6 mt-2">
+                        <div th:replace="acceuil/nbMedVendu"></div>
+                        <div th:replace="acceuil/totalVente"></div>
+                        <div class="col-12">
+                            <div class="card card-info">
+                                <div class="card-header">
+                                    <h3 class="card-title">Vente par Utilisateur <span
+                                            th:text="${#dates.format(#dates.createNow(), 'EEEE dd MMMM yyyy')}"></span></h3>
+                                    <div class="card-tools">
+                                        <button class="btn btn-tool" data-card-widget="collapse" type="button">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button class="btn btn-tool" data-card-widget="remove" type="button">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="pieChart"
+                                            style="height: 200px;"></canvas>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-4">
+                        <div class="col-12">
+                            <!-- Widget: user widget style 2 -->
+                            <div class="card card-info">
+                                <div class="card-header">
+                                    <h5 class="card-title">Vente <span
+                                            th:text="${#dates.format(#dates.createNow(), 'EEEE dd MMMM yyyy')}"></span></h5>
+                                    <div class="card-tools">
+                                        <button class="btn btn-tool" data-card-widget="collapse" type="button">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button class="btn btn-tool" data-card-widget="remove" type="button">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-footer  scroll pt-1 p-0">
+                                    <ul class="nav flex-column">
+                                        <th:block th:each="vente :${ventesTotalParUtilisateur}">
+                                            <li class="nav-link text-info">
+                                                <span th:text="${vente.utilisateur.prenom}+' ' +${vente.utilisateur.nom}"></span>
+                                                <span class="float-right badge text-info"
+                                                      th:text="${#numbers.formatInteger(totalVente,3,'POINT')}+
+                                                        ' F CFA'" th:with="totalVente=${vente.montant}"></span>
+                                            </li>
+                                        </th:block>
+
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- /.widget-user -->
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="col-12">
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h3 class="card-title">Benefice du mois <span
+                                            th:text="${#dates.format(#dates.createNow(), 'MMMM yyyy')}"></span></h3>
+
+                                    <div class="card-tools">
+                                        <button class="btn btn-tool" data-card-widget="collapse" type="button">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button class="btn btn-tool" data-card-widget="remove" type="button">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body p-0">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-link text-info">
+                                            <span>Recette</span>
+                                            <span class="float-right badge text-info"
+                                                  th:text="${#numbers.formatInteger(montant,3,'POINT')}+
+                                                        ' F CFA'" th:with="montant=${sommeVentesMois}"></span>
+                                        </li>
+                                        <li class="nav-link text-danger">
+                                            <span>Depense</span>
+                                            <span class="float-right badge text-danger"
+                                                  th:text="${#numbers.formatInteger(montant,3,'POINT')}+
+                                                        ' F CFA'" th:with="montant=${sommeDepensesMois}"></span>
+                                        </li>
+                                        <li class="nav-link text-success">
+                                            <span>Benefice</span>
+                                            <span class="float-right badge text-success"
+                                                  th:text="${#numbers.formatInteger(montant,3,'POINT')}+
+                                                        ' F CFA'"
+                                                  th:with="montant=${sommeVentesMois-sommeDepensesMois}"></span>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="col-12">
+                            <div class="card card-danger">
+                                <div class="card-header">
+                                    <h3 class="card-title">Depense du mois <span
+                                            th:text="${#dates.format(#dates.createNow(), 'MMMM yyyy')}"></span></h3>
+
+                                    <div class="card-tools">
+                                        <button class="btn btn-tool" data-card-widget="collapse" type="button">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        <button class="btn btn-tool" data-card-widget="remove" type="button">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body  scroll pt-1 p-0">
+                                    <ul class="nav flex-column">
+                                        <th:block th:each="depense :${ depensesMois}">
+                                            <li class="nav-link text-info">
+                                                <span th:text="${depense.type}"></span>
+                                                <span class="float-right badge text-danger"
+                                                      th:text="${#numbers.formatInteger(montant,3,'POINT')}+
+                                                        ' F CFA'" th:with="montant=${depense.montant}"></span>
+                                            </li>
+                                        </th:block>
+
+                                    </ul>
+
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div th:replace="statistique/nbMedVenduDates"></div>
+                    <div th:replace="acceuil/ruptStock"></div>
+
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+</div>
+
+<div th:replace="fragment/footer"></div>
+
+</div>
+</body>
+<script th:replace="fragment/script"></script>
+</html>

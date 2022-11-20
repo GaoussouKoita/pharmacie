@@ -24,7 +24,7 @@ public class UtilisateurController {
 
 
     @Autowired
-    private AccountService accountService;
+    private AccountService service;
     @Autowired
     private PharmacieService pharmacieService;
 
@@ -34,22 +34,27 @@ public class UtilisateurController {
         log.info("Formulaire user");
         model.addAttribute("pharmacies", pharmacieService.lister());
         model.addAttribute("utilisateur", new Utilisateur());
-        model.addAttribute("roles", accountService.utilisateurActif().getRoles());
-        model.addAttribute("utilisateurActif", accountService.utilisateurActif());
+        model.addAttribute("roles", service.utilisateurActif().getRoles());
+        model.addAttribute("utilisateurActif", service.utilisateurActif());
         return "utilisateur/nouveau";
     }
 
     @PostMapping(Endpoint.NOUVEAU)
     public String add(@ModelAttribute("utilisateur") @Valid Utilisateur utilisateur, Errors errors, Model model) {
         log.info("Ajout user dans la bd");
-        model.addAttribute("utilisateurActif", accountService.utilisateurActif());
-        if (errors.hasErrors()) {
+        model.addAttribute("utilisateurActif", service.utilisateurActif());
+        if (errors.hasErrors() || !utilisateur.getPassword().equals(utilisateur.getConfirmation())) {
+            model.addAttribute("roles", service.utilisateurActif().getRoles());
+            model.addAttribute("pharmacies", pharmacieService.lister());
 
-            model.addAttribute("roles", accountService.utilisateurActif().getRoles());
+            if (!utilisateur.getPassword().equals(utilisateur.getConfirmation())) {
+                errors.rejectValue("password", "", "Les deux mots de passe sont differents");
+                errors.rejectValue("confirmation", "", "Les deux mots de passe sont differents");
+            }
             return "utilisateur/nouveau";
 
         } else {
-            Utilisateur utilisateur1 = accountService.ajouterUtilisateur(utilisateur);
+            Utilisateur utilisateur1 = service.ajouterUtilisateur(utilisateur);
             model.addAttribute("utilisateur", utilisateur1);
             return "utilisateur/info";
         }
@@ -61,58 +66,58 @@ public class UtilisateurController {
     public String modifier(@PathVariable Long id, Model model) {
         log.info("Update user");
         model.addAttribute("pharmacies", pharmacieService.lister());
-        model.addAttribute("utilisateurActif", accountService.utilisateurActif());
-        model.addAttribute("utilisateur", accountService.rechercher(id));
-        model.addAttribute("userRoles", accountService.rechercher(id).getRoles());
-        model.addAttribute("roles", accountService.utilisateurActif().getRoles());
+        model.addAttribute("utilisateurActif", service.utilisateurActif());
+        model.addAttribute("utilisateur", service.rechercher(id));
+        model.addAttribute("userRoles", service.rechercher(id).getRoles());
+        model.addAttribute("roles", service.utilisateurActif().getRoles());
         return "utilisateur/nouveau";
     }
 
     @GetMapping(Endpoint.DESACTIVER + Endpoint.ID)
     public String delete(@PathVariable Long id) {
         log.warn("Desactivation user");
-        accountService.desactiver(id);
+        service.desactiver(id);
         return "redirect:/utilisateur";
 
     }
 
     @GetMapping(Endpoint.INFO + Endpoint.ID)
     public String rechercher(@PathVariable Long id, Model model) {
-        model.addAttribute("utilisateurActif", accountService.utilisateurActif());
-        model.addAttribute("utilisateur", accountService.rechercher(id));
+        model.addAttribute("utilisateurActif", service.utilisateurActif());
+        model.addAttribute("utilisateur", service.rechercher(id));
         return "utilisateur/info";
     }
 
     @GetMapping(Endpoint.DETAILS)
     public String rechercherParNom(@RequestParam(defaultValue = "0") int page, @RequestParam String nom, Model model) {
 
-        Page<Utilisateur> utilisateurPage = accountService.lister(nom, page);
+        Page<Utilisateur> utilisateurPage = service.lister(nom, page);
 
         model.addAttribute("utilisateurs", utilisateurPage.getContent());
         model.addAttribute("totalElement", utilisateurPage.getTotalElements());
         model.addAttribute("totalPage", new int[utilisateurPage.getTotalPages()]);
         model.addAttribute("nbTotalPage", utilisateurPage.getTotalPages());
         model.addAttribute("currentPage", page);
-        model.addAttribute("utilisateurActif", accountService.utilisateurActif());
+        model.addAttribute("utilisateurActif", service.utilisateurActif());
         return "utilisateur/liste";
     }
 
     @GetMapping
     public String all(Model model, @RequestParam(defaultValue = "0") int page) {
         log.info("Lister users");
-        Page<Utilisateur> utilisateurPage = accountService.lister(page);
+        Page<Utilisateur> utilisateurPage = service.lister(page);
 
         model.addAttribute("utilisateurs", utilisateurPage.getContent());
         model.addAttribute("totalElement", utilisateurPage.getTotalElements());
         model.addAttribute("totalPage", new int[utilisateurPage.getTotalPages()]);
         model.addAttribute("nbTotalPage", utilisateurPage.getTotalPages());
         model.addAttribute("currentPage", page);
-        model.addAttribute("utilisateurActif", accountService.utilisateurActif());
-        model.addAttribute("pharmacie", accountService.utilisateurActif().getPharmacie());
+        model.addAttribute("utilisateurActif", service.utilisateurActif());
+        model.addAttribute("pharmacie", service.utilisateurActif().getPharmacie());
 
         AtomicBoolean isRoot = new AtomicBoolean(false);
 
-        accountService.utilisateurActif().getRoles().forEach(role -> {
+        service.utilisateurActif().getRoles().forEach(role -> {
             if (role.getRoleName().equals("ROOT")) {
                 isRoot.set(true);
             }
@@ -129,7 +134,7 @@ public class UtilisateurController {
     public String changePasswordForm(Model model) {
         log.info("Formulaire Changement password");
          model.addAttribute("changePassword", new ChangePassword());
-        model.addAttribute("utilisateurActif", accountService.utilisateurActif());
+        model.addAttribute("utilisateurActif", service.utilisateurActif());
         return "utilisateur/password";
     }
 
@@ -137,12 +142,12 @@ public class UtilisateurController {
     public String PasswordForm(@ModelAttribute("changePassword") @Valid ChangePassword changePassword,
                                Errors errors, Model model) throws ServletException {
         log.info("Changement de Password");
-        model.addAttribute("utilisateurActif", accountService.utilisateurActif());
+        model.addAttribute("utilisateurActif", service.utilisateurActif());
 
-        if (accountService.verifierPassword(changePassword) == 0) {
-            accountService.verifierPassword(changePassword);
+        if (service.verifierPassword(changePassword) == 0) {
+            service.verifierPassword(changePassword);
             return "redirect:/utilisateur";
-        } else if (accountService.verifierPassword(changePassword) == 1) {
+        } else if (service.verifierPassword(changePassword) == 1) {
             errors.rejectValue("newPassword", "",
                     "Le password et la confirmation sont different");
         } else {

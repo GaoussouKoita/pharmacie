@@ -7,6 +7,7 @@ import ml.workanet.app.pharmacie.securite.entity.Utilisateur;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class Approvision {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Float montant;
+    private long montant;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate date = LocalDate.now();

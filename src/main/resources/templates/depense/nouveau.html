@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <title>Depense</title>
+    <th:block th:replace="fragment/style.html"></th:block>
+
+</head>
+<body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
+<div class="wrapper">
+    <div th:replace="fragment/header"></div>
+
+    <div class="content-wrapper">
+
+        <!--Formulaire-->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 my-2">
+
+                        <div class="card card-info">
+                            <div class="card-header">
+                                <h3 class="card-title" th:if=" ${#httpServletRequest.requestURI=='/depense/nouveau'}">
+                                    Nouveau depense</h3>
+                                <h3 class="card-title" th:unless=" ${#httpServletRequest.requestURI=='/depense/nouveau'}">
+                                    Modification depense</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form class="form-horizontal" enctype="multipart/form-data"
+                                  method="post" th:action="@{/depense/nouveau}"
+                                  th:object="${depense}">
+                                <div class="card-body">
+
+                                    <input th:field="*{id}" type="hidden">
+
+
+                                    <div class="form-group row">
+                                        <label class="col-lg-2 col-form-label">Type<span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-lg-10">
+                                            <select class="form-control select2bs4" style="width: 100%;"
+                                                    th:field="*{type}" required>
+                                                <option value="EAU">EAU</option>
+                                                <option value="ELECTRICITE">ELECTRICITE</option>
+                                                <option value="LOYER">LOYER</option>
+                                                <option value="NETOYAGE">NETOYAGE</option>
+                                                <option value="AUTRE">AUTRE</option>
+                                            </select>
+                                            <span class="text-danger" th:errors="*{type}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-2 col-form-label">Montant<span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control" placeholder="Entre le montant"
+                                                   required
+                                                   th:field="*{montant}" type="number">
+                                            <span class="text-danger" th:errors="*{montant}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-2 col-form-label">Details<span
+                                                class="text-danger">*</span></label>
+                                        <div class="col-lg-10">
+                                            <input class="form-control" placeholder="Entre les details"
+                                                   required
+                                                   th:field="*{details}" type="text">
+                                            <span class="text-danger" th:errors="*{details}"></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!--Boutons-->
+                                <!-- /.card-body -->
+                                <div class="card-footer text-center">
+                                    <button class="btn btn-info" type="submit"><i class="fas fa-save"></i> Enregistre
+                                    </button>
+                                    <button class="btn btn-outline-danger" type="button"><i
+                                            class="fa fa-cancel"></i> <a th:href="@{/depense}">Annuler</a>
+                                    </button>
+                                </div>
+                                <!-- /.card-footer -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div th:replace="fragment/footer"></div>
+
+</div>
+</body>
+<script th:replace="fragment/script"></script>
+</html>

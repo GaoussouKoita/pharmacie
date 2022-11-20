@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 
 @Entity
 @Data
@@ -15,9 +16,12 @@ public class Medicament {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
-    private float prixVente;
-    private float prixAchat;
-    private float prixAssureur;
+    @Min(value = 5, message = "Le prix doit être superieur à 5")
+    private long prixVente;
+    @Min(value = 5, message = "Le prix d'achat doit être superieur à 5")
+    private long prixAchat;
+    @Min(value = 5, message = "Le prix assureur doit être superieur à 5")
+    private long prixAssureur;
     private boolean prisEnCharge=true;
     private String details;
     @ManyToOne

@@ -25,7 +25,7 @@ public class AuditController {
 
 
     @GetMapping
-    public String audit(@RequestParam Long id, @RequestParam(defaultValue = "0") int page, Model model) {
+    public String auditListe(@RequestParam Long id, @RequestParam(defaultValue = "0") int page, Model model) {
         log.info("Consultation Audit");
 
         Page<Audit> auditPage = service.lister(id, page);

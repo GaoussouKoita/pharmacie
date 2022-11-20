@@ -42,8 +42,8 @@ public class VenteController {
 
     @PostMapping(Endpoint.NOUVEAU)
     public String ajouterVente(@ModelAttribute("vente") Vente vente,
-                      Errors errors, Model model) {
-        log.info("Ajout de Vente : "+vente);
+                               Errors errors, Model model) {
+        log.info("Ajout de Vente : " + vente);
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
         vente = service.ajouter(vente);
         model.addAttribute("vente", vente);
@@ -52,17 +52,17 @@ public class VenteController {
     }
 
 
-    @GetMapping(Endpoint.SUPPRESSION+Endpoint.ID)
+    @GetMapping(Endpoint.SUPPRESSION + Endpoint.ID)
     public String supprimerVente(@PathVariable("id") Long id) {
-        log.info("Suppression Vente : "+service.rechercher(id));
+        log.info("Suppression Vente : " + service.rechercher(id));
         service.supprimer(id);
         return "redirect:/vente";
 
     }
 
-    @GetMapping(Endpoint.INFO+Endpoint.ID)
+    @GetMapping(Endpoint.INFO + Endpoint.ID)
     public String infoVente(@PathVariable("id") Long id, Model model) {
-        log.info("Info Vente : "+service.rechercher(id));
+        log.info("Info Vente : " + service.rechercher(id));
         model.addAttribute("vente", service.rechercher(id));
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
         return "vente/info";
@@ -72,30 +72,28 @@ public class VenteController {
     public String listerVentes(Model model, @RequestParam(defaultValue = "0") int page) {
         log.info("Lister Ventes");
         Page<Vente> ventePage = service.lister(page, Constante.NBRE_PAR_PAGE);
-        model.addAttribute("ventes", ventePage.getContent());
-
-        model.addAttribute("totalElement", ventePage.getTotalElements());
-        model.addAttribute("totalPage", new int[ventePage.getTotalPages()]);
-        model.addAttribute("nbTotalPage", ventePage.getTotalPages());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("utilisateurActif", accountService.utilisateurActif());
+        pagination(ventePage, page, model);
         return "vente/liste";
     }
 
     @GetMapping(Endpoint.DETAILS)
     public String rechercherVentes(Model model, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam(defaultValue = "0") int page) {
         log.info("Liste Vente par Date : " + date);
+        Page<Vente> ventePage = service.listerParDate(date, page);
+        model.addAttribute("date", date);
+        pagination(ventePage, page, model);
 
+        return "vente/liste";
+    }
 
-       /* Page<Vente> ventePage = service.listeParDate(date, page);
+    private void pagination(Page<Vente> ventePage, int page, Model model) {
+
         model.addAttribute("ventes", ventePage.getContent());
-
         model.addAttribute("totalElement", ventePage.getTotalElements());
         model.addAttribute("totalPage", new int[ventePage.getTotalPages()]);
         model.addAttribute("nbTotalPage", ventePage.getTotalPages());
         model.addAttribute("currentPage", page);
-        */
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
-        return "vente/details";
+
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -24,22 +25,26 @@ public class ApprovisionService {
     @Autowired
     private StockService stockService;
     @Autowired
+    private DepenseService depenseService;
+    @Autowired
     private AuditService auditService;
 
     public Approvision ajouter(Approvision approvision) {
         auditService.ajouter(new Audit("Ajout approvision", "Montant "
                 + approvision.getMontant() + " " + approvision.getDate() + " "
                 + approvision.getHeure()));
+
+
         approvision.setUtilisateur(accountService.utilisateurActif());
         approvision.setPharmacie(accountService.utilisateurActif().getPharmacie());
 
-        float total = 0;
+        long total = 0;
         List<ES_Medicament> es_medicaments = approvision.getMedicaments();
 
 
         for (ES_Medicament es_med : es_medicaments) {
             total += es_med.getQuantite() * es_med.getPrix();
-            Medicament medicament = medicamentService.rechercher(es_med.getMedicament().getId());
+            Medicament medicament = medicamentService.listerParNom(es_med.getMedicament().getId());
             es_med.setMedicament(medicament);
 
             Stock stock = stockService.rechercheParMed(medicament, approvision.getPharmacie());
@@ -59,6 +64,10 @@ public class ApprovisionService {
 
         approvision.setMontant(total);
         approvision.setMedicaments(es_medicaments);
+
+        depenseService.ajouter(new Depense(approvision.getMontant(), "APPROVISION",
+                approvision.getDate()+" "+
+                        approvision.getHeure()));
 
         return repository.save(approvision);
     }
@@ -81,7 +90,15 @@ public class ApprovisionService {
 
     public Page<Approvision> lister(int page, int nbreParPage) {
         auditService.ajouter(new Audit("Liste Approvision", "Consultation"));
-        return repository.findAll(PageRequest.of(page, nbreParPage,
+        return repository.findByPharmacie(accountService.utilisateurActif().getPharmacie(),
+                PageRequest.of(page, nbreParPage,Sort.by("date").descending()
+                        .and(Sort.by("heure").ascending())));
+    }
+
+    public Page<Approvision> listerEntreDates(LocalDate dateDebut, LocalDate dateFin, int page, int nbreParPage) {
+        auditService.ajouter(new Audit("Liste Approvision entre dates "+ dateDebut+"-"+dateFin, "Consultation"));
+        return repository.findByDateBetweenAndPharmacie(dateDebut, dateFin, accountService.utilisateurActif().getPharmacie(),
+                PageRequest.of(page, nbreParPage,
                 Sort.by("date").descending().and(Sort.by("heure").ascending())));
     }
 }

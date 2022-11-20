@@ -15,7 +15,6 @@ public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Min(value = 1, message = "Veuillez inserer la quantite du produit >= 1 svp !")
     private int quantite;
     @ManyToOne
     private Medicament medicament;

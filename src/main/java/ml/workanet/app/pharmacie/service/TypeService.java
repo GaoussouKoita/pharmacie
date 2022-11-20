@@ -42,13 +42,14 @@ public class TypeService {
 
     public Page lister(int page, int nbreParPage) {
 
-        return repository.findAll(PageRequest.of(page, nbreParPage,
+        return repository.findByPharmacie(accountService.utilisateurActif().getPharmacie(),
+                PageRequest.of(page, nbreParPage,
                 Sort.by("nom").ascending()));
     }
 
     public List<Type> lister() {
         auditService.ajouter(new Audit("Liste Type", "Consultation"));
-        return repository.findAll(
+        return repository.findByPharmacie(accountService.utilisateurActif().getPharmacie(),
                 Sort.by("nom").ascending());
     }
 

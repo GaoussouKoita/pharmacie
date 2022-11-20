@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,15 +29,33 @@ public class MedicamentService {
 
         medicament.setType(typeService.rechercher(medicament.getType().getId()));
         medicament.setPharmacie(accountService.utilisateurActif().getPharmacie());
-        auditService.ajouter(new Audit("Ajout Medicament",  medicament.getNom() + " "
-                + " "+medicament.getPrixVente()));
+        auditService.ajouter(new Audit("Ajout Medicament", medicament.getNom() + " "
+                + " " + medicament.getPrixVente()));
         return repository.save(medicament);
     }
 
-    public Medicament rechercher(Long id) {
+    public List<Medicament> ajouter(List<Medicament> medicaments) {
+
+        List<Medicament> medicaments1 = new ArrayList<>();
+        for (Medicament medicament : medicaments) {
+            medicaments1.add(listerParNom(medicament.getId()));
+        }
+        return repository.saveAll(medicaments);
+    }
+
+    public Medicament listerParNom(Long id) {
         Medicament medicament = repository.findById(id).get();
         auditService.ajouter(new Audit("Recherche Medicament", medicament.getNom() + " "
-                + " "+medicament.getPrixVente()));
+                + " " + medicament.getPrixVente()));
+        return medicament;
+    }
+
+    public Medicament listerParNom(String nom) {
+        Medicament medicament = repository.findByNomAndPharmacie(nom,
+                accountService.utilisateurActif().getPharmacie());
+        auditService.ajouter(new Audit("Recherche Medicament",
+                medicament.getNom() + " "
+                        + " " + medicament.getPrixVente()));
         return medicament;
     }
 
@@ -44,24 +63,25 @@ public class MedicamentService {
         Medicament medicament = repository.findById(id).get();
         repository.deleteById(id);
         auditService.ajouter(new Audit("Suppression Medicament", medicament.getNom() + " "
-                + " "+medicament.getPrixVente()));
+                + " " + medicament.getPrixVente()));
     }
 
     public Page<Medicament> lister(int page, int nbreParPage) {
         auditService.ajouter(new Audit("Liste Medicaments", "Consultation"));
-        return repository.findAll(PageRequest.of(page, nbreParPage,
-                Sort.by("nom").ascending()));
+        return repository.findByPharmacie(accountService.utilisateurActif().getPharmacie(),
+                PageRequest.of(page, nbreParPage, Sort.by("nom").ascending()));
     }
 
-    public Page<Medicament> rechercher(String nom, int page, int nbreParPage) {
+    public Page<Medicament> listerParNom(String nom, int page, int nbreParPage) {
         auditService.ajouter(new Audit("Liste Medicaments", "Consultation"));
-        return repository.findByNomContaining(nom, PageRequest.
-                of(page, nbreParPage, Sort.by("nom").ascending()));
+        return repository.findByNomContainingAndPharmacie(nom, accountService.utilisateurActif().getPharmacie(),
+                PageRequest.of(page, nbreParPage, Sort.by("nom").ascending()));
     }
 
     public List<Medicament> lister() {
         auditService.ajouter(new Audit("Liste Medicaments", "Consultation"));
 
-        return repository.findAll(Sort.by("nom").descending());
+        return repository.findByPharmacie(accountService.utilisateurActif().getPharmacie(),
+                Sort.by("nom").descending());
     }
 }

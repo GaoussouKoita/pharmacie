@@ -6,13 +6,12 @@
         <nav class="mt-3 mb-5">
             <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false" data-widget="treeview" role="menu">
 
-
-                <li class="nav-header" sec:authorize="hasAuthority('UTILISATEUR')">Gestion Entree/Sorties</li>
-                <li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
-                    <a class="nav-link" th:href="@{/}"
-                       th:classappend="${#httpServletRequest.requestURI=='/vente/nouveau' or
+                <li class="nav-header" sec:authorize="hasAuthority('EMPLOYE')">Gestion Entree/Sorties</li>
+                <li class="nav-item" sec:authorize="hasAuthority('EMPLOYE')">
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI=='/vente/nouveau' or
                         #httpServletRequest.requestURI=='/vente' or
-                        #httpServletRequest.requestURI=='/vente/info'  }?'active':''">
+                        #httpServletRequest.requestURI=='/vente/info'  }?'active':''"
+                       th:href="@{/}">
                         <i class="nav-icon fas fa-cart-plus"></i>
                         <p>Vente
                             <i class="right fas fa-angle-down"></i>
@@ -33,11 +32,11 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
-                    <a class="nav-link" th:href="@{/}"
-                       th:classappend="${#httpServletRequest.requestURI=='/approvision/nouveau' or
+                <li class="nav-item" sec:authorize="hasAuthority('EMPLOYE')">
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI=='/approvision/nouveau' or
                         #httpServletRequest.requestURI=='/approvision'  or
-                        #httpServletRequest.requestURI=='/approvision/info'  }?'active':''">
+                        #httpServletRequest.requestURI=='/approvision/info'  }?'active':''"
+                       th:href="@{/}">
                         <i class="nav-icon fas fa-dolly "></i>
                         <p>Approvision
                             <i class="right fas fa-angle-down"></i>
@@ -59,13 +58,13 @@
                     </ul>
                 </li>
 
-                <li class="nav-header" sec:authorize="hasAuthority('UTILISATEUR')">Gestion medicament</li>
+                <li class="nav-header" sec:authorize="hasAuthority('EMPLOYE')">Gestion medicament</li>
 
-                <li class="nav-item"  sec:authorize="hasAuthority('UTILISATEUR')">
-                    <a class="nav-link" th:href="@{/}"
-                       th:classappend="${#httpServletRequest.requestURI=='/type/nouveau' or
-                        #httpServletRequest.requestURI=='/type/update'   or
-                        #httpServletRequest.requestURI=='/type'  }?'active':''">
+                <li class="nav-item" sec:authorize="hasAuthority('EMPLOYE')">
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI=='/type/nouveau' or
+                        #httpServletRequest.requestURI=='/type/modifier'   or
+                        #httpServletRequest.requestURI=='/type'  }?'active':''"
+                       th:href="@{/}">
                         <i class="nav-icon fas fa-certificate"></i>
                         <p>Type
                             <i class="right fas fa-angle-down"></i>
@@ -87,12 +86,12 @@
                     </ul>
                 </li>
 
-                <li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
-                    <a class="nav-link" th:href="@{/}"
-                       th:classappend="${#httpServletRequest.requestURI=='/medicament/nouveau' or
-                        #httpServletRequest.requestURI=='/medicament/update' or
+                <li class="nav-item" sec:authorize="hasAuthority('EMPLOYE')">
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI=='/medicament/nouveau' or
+                        #httpServletRequest.requestURI=='/medicament/modifier' or
                         #httpServletRequest.requestURI=='/medicament/details' or
-                        #httpServletRequest.requestURI=='/medicament'  }?'active':''">
+                        #httpServletRequest.requestURI=='/medicament'  }?'active':''"
+                       th:href="@{/}">
                         <i class="nav-icon fas fa-certificate"></i>
                         <p>Medicament
                             <i class="right fas fa-angle-down"></i>
@@ -115,11 +114,11 @@
                 </li>
                 <li class="nav-header" sec:authorize="hasAuthority('ROOT')">Gestion Stock</li>
 
-                <li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
-                    <a class="nav-link" th:href="@{/}"
-                       th:classappend="${#httpServletRequest.requestURI=='/pharmacie/nouveau' or
-                        #httpServletRequest.requestURI=='/pharmacie/update'  or
-                        #httpServletRequest.requestURI=='/pharmacie'  }?'active':''">
+                <li class="nav-item" sec:authorize="hasAuthority('EMPLOYE')">
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI=='/pharmacie/nouveau' or
+                        #httpServletRequest.requestURI=='/pharmacie/modifier'  or
+                        #httpServletRequest.requestURI=='/pharmacie'  }?'active':''"
+                       th:href="@{/}">
                         <i class="nav-icon fas fa-store-alt "></i>
                         <p>Pharmacie
                             <i class="right fas fa-angle-down"></i>
@@ -140,32 +139,47 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
-                    <a class="nav-link" th:href="@{/}"
-                       th:classappend="${#httpServletRequest.requestURI=='/stock/nouveau' or
+
+                <li class="nav-item" sec:authorize="hasAuthority('EMPLOYE')">
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI=='/stock/nouveau' or
                         #httpServletRequest.requestURI=='/stock/details' or
-                        #httpServletRequest.requestURI=='/stock'  }?'active':''">
+                        #httpServletRequest.requestURI=='/stock'  }?'active':''"
+                       th:href="@{/stock}">
                         <i class="nav-icon fas fa-store"></i>
-                        <p>Stock
+                        <p>Stock</p>
+                    </a></li>
+
+                <li class="nav-header" sec:authorize="hasAuthority('EMPLOYE')">Gestion Depense</li>
+                <li class="nav-item" sec:authorize="hasAuthority('ADMINISTRATEUR')">
+                    <a class="nav-link" th:classappend="${
+                        #httpServletRequest.requestURI=='/salaire/nouveau' or
+                        #httpServletRequest.requestURI=='/salaire'  }?'active':''"
+                       th:href="@{/}">
+                        <i class="nav-icon fas fa-money-check"></i>
+                        <p>Salaire
                             <i class="right fas fa-angle-down"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/stock}">
+                            <a class="nav-link" th:href="@{/salaire/nouveau}">
+                                <i class="fas fa-plus-circle mx-4"></i>
+                                <p>Nouveau</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/salaire}">
                                 <i class="fas fa-list mx-4"></i>
                                 <p>Liste</p>
                             </a>
                         </li>
                     </ul>
                 </li>
-
-                <li class="nav-header" sec:authorize="hasAuthority('UTILISATEUR')">Gestion Depense/Dette</li>
-                <!--<li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
-                    <a class="nav-link" th:href="@{/}"
-                       th:classappend="${
+                <li class="nav-item" sec:authorize="hasAuthority('EMPLOYE')">
+                    <a class="nav-link" th:classappend="${
                         #httpServletRequest.requestURI=='/depense/nouveau' or
-                        #httpServletRequest.requestURI=='/depense'  }?'active':''">
+                        #httpServletRequest.requestURI=='/depense'  }?'active':''"
+                       th:href="@{/}">
                         <i class="nav-icon fas fa-money-check"></i>
                         <p>Depense
                             <i class="right fas fa-angle-down"></i>
@@ -173,6 +187,11 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a class="nav-link" th:href="@{/depense/nouveau}">
+                                <i class="fas fa-plus-circle mx-4"></i>
+                                <p>Nouveau</p>
+                            </a>
+                        </li><li class="nav-item">
                             <a class="nav-link" th:href="@{/depense}">
                                 <i class="fas fa-list mx-4"></i>
                                 <p>Liste</p>
@@ -180,34 +199,40 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item" sec:authorize="hasAuthority('UTILISATEUR')">
-                    <a class="nav-link" th:href="@{/}"
-                       th:classappend="${
-                        #httpServletRequest.requestURI=='/dette-client'  }?'active':''">
-                        <i class="nav-icon fas fa-money-check-alt"></i>
-                        <p>Dette
+
+                <li class="nav-header" sec:authorize="hasAuthority('ADMINISTRATEUR')">Statistique</li>
+                <li class="nav-item" sec:authorize="hasAuthority('ADMINISTRATEUR')">
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI=='/audit'}?'active':''"
+                       th:href="@{/statistique}">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>Statistique</p>
+                    </a>
+                </li>
+
+                <li class="nav-header" sec:authorize="hasAuthority('ADMINISTRATEUR')">Gestion Utilisateur</li>
+                <li class="nav-item" sec:authorize="hasAuthority('ADMINISTRATEUR')">
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI=='/audit'}?'active':''"
+                       th:href="@{/}">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>Audit
                             <i class="right fas fa-angle-down"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a class="nav-link" th:href="@{/dette-client}">
-                                <i class="fas fa-list mx-4"></i>
+                            <a class="nav-link" th:href="@{/audit/(id=${utilisateurActif.id})}">
+                                <i class="fas fa-users mx-4"></i>
                                 <p>Liste</p>
                             </a>
                         </li>
                     </ul>
                 </li>
--->
-                <li class="nav-header" sec:authorize="hasAuthority('UTILISATEUR')">Gestion Utilisateur</li>
-
                 <li class="nav-item" sec:authorize="hasAuthority('ADMINISTRATEUR')">
-                    <a class="nav-link" th:href="@{/}"
-                       th:classappend="${#httpServletRequest.requestURI=='/utilisateur/nouveau' or
-                        #httpServletRequest.requestURI=='/utilisateur/update' or
-                        #httpServletRequest.requestURI=='/utilisateur/info'  or
-                        #httpServletRequest.requestURI=='/utilisateur/audit' or
-                        #httpServletRequest.requestURI=='/utilisateur'  }?'active':''">
+                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI=='/utilisateur/nouveau' or
+                        #httpServletRequest.requestURI=='/utilisateur/modifier' or
+                        #httpServletRequest.requestURI=='/utilisateur/info/' or
+                        #httpServletRequest.requestURI=='/utilisateur'  }?'active':''"
+                       th:href="@{/}">
                         <i class="nav-icon fas fa-user"></i>
                         <p>Utilisateur
                             <i class="right fas fa-angle-down"></i>
