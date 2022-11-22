@@ -8,8 +8,7 @@
 
 <body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
 <div class="wrapper">
-    <div th:replace="fragment/navbar-horizontal"></div>
-    <div th:replace="fragment/navbar-vertical"></div>
+    <div th:replace="fragment/header"></div>
 
     <div class="content-wrapper">
 
@@ -52,29 +51,31 @@
                                     <tr>
                                         <th>Date</th>
                                         <th>Heure</th>
-                                        <th>Montant</th>
+                                        <th>Total</th>
+                                        <th>Montant Paye</th>
                                         <th>Part Assureur</th>
                                         <th>Utilisateur</th>
-                                        <th sec:authorize="hasAuthority('ADMINISTRATEUR')">Action</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr th:each="vente : ${ ventes }"
                                         th:if="${vente.pharmacie.id}==${utilisateurActif.pharmacie.id}">
-                                        <td th:text="${#temporals.format(vente.date, 'EEE dd MMM yyyy') }"></td>
+                                        <td th:text="${#temporals.format(vente.date, 'EEEE dd MMMM yyyy') }"></td>
                                         <td th:text="${ vente.heure }"></td>
-                                        <td th:text="${ vente.montant }"></td>
+                                        <td th:text="${ vente.montantTotal }"></td>
+                                        <td th:text="${ vente.montantAPayer }"></td>
                                         <td th:text="${ vente.partAssureur }"></td>
 
                                         <td
                                                 th:text="${vente.utilisateur.prenom}+' '+${vente.utilisateur.nom}">
                                         </td>
-                                        <td sec:authorize="hasAuthority('ADMINISTRATEUR')">
+                                        <td >
                                             <a class="text-info" th:href="@{/vente/info/}+''+${vente.id}">
                                                 <i class="fas fa-info" data-toggle="tooltip" title="Info"></i>
                                             </a>
 
-                                            <button class="btn" data-toggle="modal"
+                                            <button class="btn" data-toggle="modal" sec:authorize="hasAuthority('ADMINISTRATEUR')"
                                                     th:attr="data-target='#modalSupp'+${vente.id}" type="button">
                                                 <i class="fas fa-trash-alt text-danger" data-toggle="tooltip"
                                                    title="Supprimer"></i></i>

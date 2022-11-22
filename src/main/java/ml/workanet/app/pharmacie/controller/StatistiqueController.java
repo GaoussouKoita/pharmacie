@@ -57,6 +57,7 @@ public class StatistiqueController {
         model.addAttribute("medicaments", medicaments);
 
         model.addAttribute("sommeVentesMois", venteService.sommeVentesMois());
+        model.addAttribute("sommePartAssureur", venteService.sommePartAssureurMois());
         model.addAttribute("sommeDepensesMois", depenseService.sommeDepensesMois());
         model.addAttribute("depensesMois", depenseService.listerDepensesMois());
         model.addAttribute("ventesTotalParUtilisateur", venteService.venteTotalParUtilisateur());

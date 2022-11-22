@@ -97,9 +97,8 @@
 
                             -->
                             <div class="card-tools">
-                                <ul class="pagination pagination-sm float-left ml-5">
-                                </ul>
-                                <ul class="pagination pagination-sm float-right" th:if="${totalElement}>6">
+                                <ul class="pagination pagination-sm float-right" th:if="${totalElement}>6 and
+                                         ${#httpServletRequest.requestURI=='/stock'}">
 
                                     <th:block th:if="${nbTotalPage}<=3">
                                         <li class="page-item" th:classappend="${currentPage}==0?'disabled'">
@@ -156,6 +155,53 @@
                                             th:classappend="${currentPage}==${nbTotalPage-1}?'disabled'">
                                             <a class="page-link"
                                                th:href="@{/stock/liste(page=${currentPage+1})}">&raquo;</a></li>
+
+                                    </th:block>
+                                </ul>
+                                <ul class="pagination pagination-sm float-right" th:if="${totalElement}>6  and
+                                        ${#httpServletRequest.requestURI=='/stock'}">
+
+                                    <th:block th:if="${nbTotalPage}<=3">
+                                        <li class="page-item" th:classappend="${currentPage}==0?'disabled'">
+                                            <a class="page-link" th:href="@{/stock/details(nom=${nom}, page=${currentPage-1})}">&laquo;</a>
+                                        </li>
+
+                                        <li class="page-item" th:classappend="${currentPage}==${status.index}?'active':''"
+                                            th:each="page, status : ${totalPage}">
+                                            <a class="page-link" th:href="@{/stock/details(nom=${nom}, page=${status.index})}" th:text="${status.index+1}"></a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-1}?'disabled'">
+                                            <a class="page-link" th:href="@{/stock/details(nom=${nom}, page=${currentPage+1})}">&raquo;</a>
+                                        </li>
+
+                                    </th:block>
+
+                                    <th:block th:if="${nbTotalPage}>3">
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-nbTotalPage}?'disabled':''">
+                                            <a class="page-link" th:href="@{/stock/details(nom=${nom}, page=${currentPage-1})}">&laquo;</a>
+                                        </li>
+
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-nbTotalPage}?'active':''">
+                                            <a class="page-link" th:href="@{/stock/details(nom=${nom}, page=0)}" th:text="1"></a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-nbTotalPage+1}?'active':''">
+                                            <a class="page-link" th:href="@{/stock/details(nom=${nom}, page=1)}" th:text="2"></a>
+                                        </li>
+                                        <li class="page-item" th:if="${nbTotalPage}>5">
+                                            <a class="page-link" th:text="..."></a>
+                                        </li>
+
+
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-2}?'active':''" th:if="${nbTotalPage}>4">
+                                            <a class="page-link" th:href="@{/stock/details(nom=${nom}, page=${nbTotalPage-2})}" th:text="${nbTotalPage-2}"></a>
+                                        </li>
+
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-1}?'active':''">
+                                            <a class="page-link" th:href="@{/stock/details(nom=${nom}, page=${nbTotalPage-1})}" th:text="${nbTotalPage-1}"></a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${currentPage}==${nbTotalPage-1}?'disabled'">
+                                            <a class="page-link" th:href="@{/stock/details(nom=${nom}, page=${currentPage+1})}">&raquo;</a>
+                                        </li>
 
                                     </th:block>
                                 </ul>

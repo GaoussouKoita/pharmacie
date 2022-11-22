@@ -13,6 +13,5 @@ import java.util.List;
 @Repository
 public interface TypeRepository extends JpaRepository<Type, Long> {
     Page<Type> findByPharmacie(Pharmacie pharmacie, Pageable pageable);
-
     List<Type> findByPharmacie(Pharmacie pharmacie, Sort sort);
 }

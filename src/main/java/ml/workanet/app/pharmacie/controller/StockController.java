@@ -11,10 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -30,7 +29,7 @@ public class StockController {
 
 
     @GetMapping(Endpoint.SUPPRESSION + Endpoint.ID)
-    public String delete(@PathVariable Long id) {
+    public String supprimerStock(@PathVariable Long id) {
         log.info("Suppression Stock" + service.rechercher(id));
         service.suppression(id);
         return "redirect:/stock";
@@ -38,7 +37,7 @@ public class StockController {
     }
 
     @GetMapping(Endpoint.DETAILS)
-    public String rechercher(@RequestParam(defaultValue = "0") int page, @RequestParam String nom, Model model) {
+    public String rechercherStock(@RequestParam(defaultValue = "0") int page, @RequestParam String nom, Model model) {
         log.info("Liste Stock par nom : " + nom);
 
         Page<Stock> stockPage = service.listerProdNom(nom, page);
@@ -53,9 +52,9 @@ public class StockController {
     }
 
     @GetMapping
-    public String all(Model model, @RequestParam(defaultValue = "0") int page) {
+    public String listerStock(Model model, @RequestParam(defaultValue = "0") int page) {
         log.info("Liste Stock");
-        Page<Stock> stockPage = service.liste(page);
+        Page<Stock> stockPage = service.lister(page);
         model.addAttribute("stocks", stockPage.getContent());
 
         model.addAttribute("totalElement", stockPage.getTotalElements());
@@ -64,5 +63,11 @@ public class StockController {
         model.addAttribute("currentPage", page);
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
         return "stock/liste";
+    }
+
+    @GetMapping(Endpoint.PHARMACIE)
+    @ResponseBody
+    public List<Stock> listerStock(){
+        return service.lister();
     }
 }

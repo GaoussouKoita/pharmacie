@@ -22,8 +22,9 @@ public class Vente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private int nbreMedicament;
-    @Min(value = 5, message = "Le montant doit être superieur à 5")
-    private long montant;
+    @Min(value = 5, message = "Le montantAPayer doit être superieur à 5")
+    private long montantAPayer;
+    private long montantTotal;
     private long partAssureur;
     private boolean type;
 

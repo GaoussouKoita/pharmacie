@@ -6,8 +6,7 @@
 </head>
 <body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
 <div class="wrapper">
-    <div th:replace="fragment/navbar-horizontal"></div>
-    <div th:replace="fragment/navbar-vertical"></div>
+    <div th:replace="fragment/header"></div>
 
     <div class="content-wrapper">
 
@@ -53,9 +52,8 @@
                                         <th>Date</th>
                                         <th>Heure</th>
                                         <th>Montant Total</th>
-                                        <th>Pharmacie</th>
                                         <th>Utilisateur</th>
-                                        <th sec:authorize="hasAuthority('ADMINISTRATEUR')">Action</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -66,13 +64,12 @@
                                         <td th:text="${ approvision.Heure }"></td>
                                         <td th:text="${#numbers.formatInteger(montant,3,'POINT')}+
                                             ' F CFA'" th:with="montant=${ approvision.montant }"></td>
-                                        <td th:text="${ approvision.pharmacie.nom }+' '+${ approvision.pharmacie.adresse }"></td>
                                         <td th:text="${approvision.utilisateur.prenom}+' '+${approvision.utilisateur.nom}"></td>
-                                        <td sec:authorize="hasAuthority('ADMINISTRATEUR')">
-                                            <a class="text-info" data-toggle="tooltip" th:href="@{/approvision/info/}+''+${approvision.id}"
-                                               title="Info"><i
-                                                    class="fas fa-info"></i></a>
-                                            <button class="btn" data-toggle="modal"
+                                        <td >
+                                            <a class="text-info" data-toggle="tooltip"
+                                               th:href="@{/approvision/info/}+''+${approvision.id}"
+                                               title="Info"><i  class="fas fa-info"></i></a>
+                                            <button class="btn" data-toggle="modal" sec:authorize="hasAuthority('ADMINISTRATEUR')"
                                                     th:attr="data-target='#modalSupp'+${approvision.id}" type="button">
                                                 <i class="fas fa-trash-alt text-danger" data-toggle="tooltip"
                                                    title="Supprimer"></i></i>
@@ -115,8 +112,6 @@
 
                             -->
                             <div class="card-tools">
-                                <ul class="pagination pagination-sm float-left ml-5">
-                                </ul>
                                 <ul class="pagination pagination-sm float-right" th:if="${totalElement}>6 and
                                 ${#httpServletRequest.requestURI==url}"
                                     th:with="url=@{/approvission}">

@@ -79,9 +79,6 @@
                                             <a th:href="@{/utilisateur/info/}+''+${utilisateur.id}"
                                                data-toggle="tooltip" title="Info">
                                                 <i class="fas fa-info-circle text-default"></i></a>
-                                            <a th:href="@{/audit/(id=${utilisateur.id})}"
-                                               data-toggle="tooltip" title="Audit">
-                                                <i class="fas fa-th text-secondary"></i></a>
                                             <button class="btn" th:attr="data-target='#modalSupp'+${utilisateur.id}" data-toggle="modal" type="button">
                                                 <i class="fas fa-trash-alt text-danger" data-toggle="tooltip" title="Desactiver"></i></i>
                                             </button>
@@ -119,9 +116,6 @@
 
                             -->
                             <div class="card-tools">
-                                <ul class="pagination pagination-sm float-left ml-5">
-                                    <span th:text="'Vous avez '+${totalElement}+' Utilisateur.s'"></span>
-                                </ul>
                                 <ul class="pagination pagination-sm float-right" th:if="${totalElement}>7">
 
                                     <th:block th:if="${nbTotalPage}<=3">

@@ -112,9 +112,9 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-header" sec:authorize="hasAuthority('ROOT')">Gestion Stock</li>
+                <li class="nav-header" sec:authorize="hasAuthority('EMPLOYE')">Gestion Stock</li>
 
-                <li class="nav-item" sec:authorize="hasAuthority('EMPLOYE')">
+                <li class="nav-item" sec:authorize="hasAuthority('ROOT')">
                     <a class="nav-link" th:classappend="${#httpServletRequest.requestURI=='/pharmacie/nouveau' or
                         #httpServletRequest.requestURI=='/pharmacie/modifier'  or
                         #httpServletRequest.requestURI=='/pharmacie'  }?'active':''"
@@ -191,7 +191,8 @@
                                 <i class="fas fa-plus-circle mx-4"></i>
                                 <p>Nouveau</p>
                             </a>
-                        </li><li class="nav-item">
+                        </li>
+                        <li class="nav-item" sec:authorize="hasAuthority('ADMINISTRATEUR')">
                             <a class="nav-link" th:href="@{/depense}">
                                 <i class="fas fa-list mx-4"></i>
                                 <p>Liste</p>
@@ -210,23 +211,6 @@
                 </li>
 
                 <li class="nav-header" sec:authorize="hasAuthority('ADMINISTRATEUR')">Gestion Utilisateur</li>
-                <li class="nav-item" sec:authorize="hasAuthority('ADMINISTRATEUR')">
-                    <a class="nav-link" th:classappend="${#httpServletRequest.requestURI=='/audit'}?'active':''"
-                       th:href="@{/}">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>Audit
-                            <i class="right fas fa-angle-down"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/audit/(id=${utilisateurActif.id})}">
-                                <i class="fas fa-users mx-4"></i>
-                                <p>Liste</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
                 <li class="nav-item" sec:authorize="hasAuthority('ADMINISTRATEUR')">
                     <a class="nav-link" th:classappend="${#httpServletRequest.requestURI=='/utilisateur/nouveau' or
                         #httpServletRequest.requestURI=='/utilisateur/modifier' or

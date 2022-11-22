@@ -21,42 +21,30 @@
 
                 </div>
                 <div class="row ">
-                    <th:block th:if="${#arrays.length(medicaments)} > 0"
-                              th:with="medicaments = ${medicaments}">
+                    <!-- ./Histogramme -->
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header  card-title text-center border-0">
+                                <h5 class="text-info">Medicaments vendus par quantite :
+                                    <spam class="text-success text-center mb-1"
+                                          th:text="${utilisateurActif.prenom}+' ' +${utilisateurActif.nom}">
+                                    </spam>
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="text-center text-danger" th:if="${#arrays.isEmpty(medicaments)}"
+                                      th:with="medicaments = ${medicaments}">Aucune Vente</h4>
+                                <div class="position-relative mb-4">
 
-                        <!-- ./Histogramme -->
-                        <div class="col-6">
-                            <div class="card">
-                                <div class="card-header  card-title text-center border-0">
-                                    <h3 class="text-info">Medicaments vendus par quantite :
-                                        <spam class="text-success text-center mb-1"
-                                              th:text="${utilisateurActif.prenom}+' ' +${utilisateurActif.nom}">
-                                        </spam>
-                                    </h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex">
-                                        <p class="d-flex flex-column">
-                                            <span>Quantites</span>
-                                        </p>
-                                    </div>
-                                    <!-- /.d-flex -->
-
-
-                                    <div class="position-relative mb-4">
-                                        <canvas height="200" id="vente-chart-utilisateur"></canvas>
-                                    </div>
-
-                                    <div class="d-flex flex-row justify-content-end">
-                                        <span class="mr-2">Medicament</span>
-                                    </div>
+                                    <canvas height="200" id="vente-chart-utilisateur"
+                                            th:if="${#arrays.length(medicaments)} > 0"
+                                            th:with="medicaments = ${medicaments}"></canvas>
                                 </div>
                             </div>
-                            <!-- /.card -->
                         </div>
-                        <!-- ./col -->
+                        <!-- /.card -->
+                    </div>
 
-                    </th:block>
                     <div class="col-6">
                         <div th:replace="acceuil/ruptStock"></div>
                     </div>

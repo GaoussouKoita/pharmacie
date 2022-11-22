@@ -13,12 +13,12 @@
                 </button>
             </div>
         </div>
-        <p th:text="${#arrays.isEmpty(stocks)}?'Aucun Medicament en rupture de stock'"
-           class="text-center text-success my-1" th:with="stocks=${stocks}"></p>
+        <h4 th:text="${#arrays.isEmpty(stocks)}?'Aucun Medicament en rupture de stock'"
+           class="text-center text-success my-1" th:with="stocks=${stocks}"></h4>
         <div class="card-body scroll pt-1" th:unless="${#arrays.isEmpty(stocks)}">
             <th:block th:each="stock : ${stocks}" >
                                     <span  th:class="${stock.quantite}<50?'text-danger':'text-warning'"
-                                           th:text="${stock.medicament.type.nom}+' '+${stock.medicament.nom}">
+                                           th:text="${stock.medicament.nom}+' '+${stock.medicament.type.nom}">
                                     </span>
                 <b th:class="${stock.quantite}<50?'text-danger':'text-warning'"
                    th:text="' : '+${stock.quantite}"></b>

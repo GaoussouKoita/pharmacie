@@ -1,7 +1,10 @@
 package ml.workanet.app.pharmacie.service;
 
 
-import ml.workanet.app.pharmacie.domaine.*;
+import ml.workanet.app.pharmacie.domaine.ES_Medicament;
+import ml.workanet.app.pharmacie.domaine.Medicament;
+import ml.workanet.app.pharmacie.domaine.Pharmacie;
+import ml.workanet.app.pharmacie.domaine.Stock;
 import ml.workanet.app.pharmacie.repository.StockRepository;
 import ml.workanet.app.pharmacie.securite.service.AccountService;
 import ml.workanet.app.pharmacie.utils.Constante;
@@ -22,12 +25,8 @@ public class StockService {
     private StockRepository repository;
     @Autowired
     private AccountService accountService;
-    @Autowired
-    private AuditService auditService;
 
     public Stock ajouter(Stock stock) {
-        auditService.ajouter(new Audit("Ajout Stock", stock.getMedicament().getNom()+" : "+stock.getQuantite()));
-
         Stock stockEncours = rechercheParMed(stock.getMedicament(), stock.getPharmacie());
         return repository.save(stock);
 
@@ -35,16 +34,11 @@ public class StockService {
 
     public Stock rechercher(Long id) {
         Stock stock= repository.findById(id).get();
-        auditService.ajouter(new Audit("Recherche Stock", stock.getMedicament().getNom()+" : "+stock.getQuantite()));
-
         return this.repository.findById(id).get();
     }
 
     public void suppression(Long id) {
         Stock stock= repository.findById(id).get();
-        auditService.ajouter(new Audit("Suppresion Stock",
-                stock.getMedicament().getNom()+" : "+stock.getQuantite()));
-
         repository.deleteById(id);
     }
 
@@ -52,20 +46,17 @@ public class StockService {
         return repository.findByMedicamentAndPharmacie(medicament, pharmacie);
     }
 
-    public List<Stock> liste() {
+    public List<Stock> lister() {
         return repository.findByPharmacie(accountService.utilisateurActif().getPharmacie(),
-                Sort.by("quantite"));
+                Sort.by("medicament.nom"));
     }
 
-    public Page<Stock> liste(int page) {
-        auditService.ajouter(new Audit("Liste Stock", "Consultation"));
-        return repository.findByPharmacie(accountService.utilisateurActif().getPharmacie() ,
+    public Page<Stock> lister(int page) {
+        return repository.findByPharmacie(accountService.utilisateurActif().getPharmacie(),
                 PageRequest.of(page, Constante.NBRE_PAR_PAGE));
     }
 
     public Page<Stock> listerProdNom(String nom, int page) {
-        auditService.ajouter(new Audit("Liste Stock par nom : "+nom, "Consultation"));
-
         return repository.findByMedicamentNomContainingAndPharmacie(nom,
                 accountService.utilisateurActif().getPharmacie(),
                 PageRequest.of(page, Constante.NBRE_PAR_PAGE));

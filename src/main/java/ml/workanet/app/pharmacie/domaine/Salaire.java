@@ -25,7 +25,7 @@ public class Salaire {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Min(value = 5, message = "Le montant doit être superieur à 5")
+    @Min(value = 5, message = "Le montantAPayer doit être superieur à 5")
     private long montant;
 
     @DateTimeFormat(pattern = "yyyy-MM")

@@ -78,7 +78,7 @@ public class SalaireController {
     public String detailsSalaire(@RequestParam String nom, @RequestParam(defaultValue = "0") int page, Model model) {
         log.info("Recherche Salaire par nom d'utilisateur : " + nom);
         Page<Salaire> salairePage = service.rechercher(nom, page, Constante.NBRE_PAR_PAGE);
-
+        model.addAttribute("nom", nom);
         pagination(salairePage, page, model);
         return "salaire/liste";
     }

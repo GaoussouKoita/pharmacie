@@ -16,28 +16,33 @@
             <div class="container-fluid">
                 <div class="row"
                      th:if="${vente.pharmacie.id}==${utilisateurActif.pharmacie.id}">
-                    <div class="col-lg-8 offset-2 my-2">
+                    <div class="col-8 offset-2 my-2">
 
                         <div class="card card-info">
 
                             <div class="card-header">
                                 <div class="card-title">
-                                    <i th:text="'Vente du '+${#temporals.format(date, 'E dd MMM yyyy')}"
+                                    <i th:text="'Vente du '+${#temporals.format(date, 'EEEE dd MMMM yyyy')}"
                                        th:with="date=${vente.date}"></i>
                                     <i th:text="${#temporals.format(heure, 'HH:mm:ss')}"
                                        th:with="heure=${vente.heure}"></i>
                                 </div>
                                 <div class="card-tools">
                                     <h6 th:text="'Total : '+${#numbers.formatInteger(total,3,'POINT')}+' F CFA'"
-                                        th:with="total=${vente.montant}"></h6>
-
+                                        th:with="total=${vente.montantTotal}"></h6>
+                                    <th:block th:if="${vente.type}">
+                                    <h6 th:text="'Montant a Payer : '+${#numbers.formatInteger(total,3,'POINT')}+' F CFA'"
+                                        th:with="total=${vente.montantAPayer}"></h6>
+                                    <h6 th:text="'Part Assureur : '+${#numbers.formatInteger(total,3,'POINT')}+' F CFA'"
+                                        th:with="total=${vente.partAssureur}"></h6>
+                                    </th:block>
                                 </div>
                             </div>
                             <div class="card-body table-responsive p-0">
                                 <table class="table table-sm table-hover text-nowrap table-striped">
                                     <thead>
                                     <tr>
-                                        <th>Designation</th>
+                                        <th>Medicament</th>
                                         <th>Quantite</th>
                                         <th>Prix</th>
                                         <th>Montant</th>

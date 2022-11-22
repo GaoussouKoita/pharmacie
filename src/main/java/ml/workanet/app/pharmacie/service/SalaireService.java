@@ -1,6 +1,5 @@
 package ml.workanet.app.pharmacie.service;
 
-import ml.workanet.app.pharmacie.domaine.Audit;
 import ml.workanet.app.pharmacie.domaine.Depense;
 import ml.workanet.app.pharmacie.domaine.Salaire;
 import ml.workanet.app.pharmacie.repository.SalaireRepository;
@@ -22,8 +21,6 @@ public class SalaireService {
     private AccountService accountService;
     @Autowired
     private DepenseService depenseService;
-    @Autowired
-    private AuditService auditService;
 
 
     public Salaire ajouter(Salaire salaire) {
@@ -34,39 +31,30 @@ public class SalaireService {
                 salaire.getUtilisateur().getPrenom() + " " +
                         salaire.getUtilisateur().getNom() + " " +
                         salaire.getMois()));
-        auditService.ajouter(new Audit("Ajout Salaire", salaire.getMontant() + " "
-                + " " + salaire.getMontant() + " " + salaire.getUtilisateur().getEmail()));
         return repository.save(salaire);
     }
 
     public Salaire rechercher(Long id) {
         Salaire salaire = repository.findById(id).get();
-        auditService.ajouter(new Audit("Recherche Salaire", salaire.getMontant() + " "
-                + " " + salaire.getMontant() + " " + salaire.getUtilisateur().getEmail()));
-        return salaire;
+       return salaire;
     }
 
     public void supprimer(Long id) {
         Salaire salaire = repository.findById(id).get();
         repository.deleteById(id);
-        auditService.ajouter(new Audit("Suppression Salaire", salaire.getMontant() + " "
-                + " " + salaire.getMontant() + " " + salaire.getUtilisateur().getEmail()));
     }
 
     public Page<Salaire> lister(int page, int nbreParPage) {
-        auditService.ajouter(new Audit("Liste Salaires", "Consultation"));
         return repository.findByPharmacie(accountService.utilisateurActif().getPharmacie(),
                 PageRequest.of(page, nbreParPage, Sort.by("mois").descending()));
     }
 
     public Page<Salaire> rechercher(String nom, int page, int nbreParPage) {
-        auditService.ajouter(new Audit("Liste Salaires", "Consultation"));
         return repository.findByUtilisateurNomContainingAndPharmacie(nom, accountService.utilisateurActif().getPharmacie(),
                 PageRequest.of(page, nbreParPage));
     }
 
     public List<Salaire> lister() {
-        auditService.ajouter(new Audit("Liste Salaires", "Consultation"));
         return repository.findByPharmacie(accountService.utilisateurActif().getPharmacie());
     }
 }

@@ -28,19 +28,21 @@ public class DepenseController {
     @GetMapping(Endpoint.NOUVEAU)
     public String formDepense(Model model) {
         log.info("Formulaire Depense ");
-        model.addAttribute("depense", new Depense());
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
+        model.addAttribute("depense", new Depense());
         return "depense/nouveau";
     }
 
     @PostMapping(Endpoint.NOUVEAU)
     public String ajouterDepense(@ModelAttribute @Valid Depense depense, Errors errors, Model model) {
+        model.addAttribute("utilisateurActif", accountService.utilisateurActif());
         if (errors.hasErrors()) {
-            model.addAttribute("utilisateurActif", accountService.utilisateurActif());
             return "depense/nouveau";
         }
         depense = service.ajouter(depense);
-        return "redirect:/depense";
+        model.addAttribute("depense", depense);
+
+        return "depense/info";
     }
 
     @GetMapping(Endpoint.SUPPRESSION + Endpoint.ID)
@@ -50,18 +52,19 @@ public class DepenseController {
         return "redirect:/depense";
     }
 
+    @GetMapping(Endpoint.INFO + Endpoint.ID)
+    public String InfoDepense(@PathVariable Long id, Model model) {
+        Depense depense = service.rechercher(id);
+        log.info("Info Depense " + depense);
+        model.addAttribute("depense", depense);
+        return "depense/info";
+    }
+
     @GetMapping
     public String depenseListe(@RequestParam(defaultValue = "0") int page, Model model) {
         log.info("Consultation Depense");
-        Page<Depense> auditPage = service.lister(page);
-
-        model.addAttribute("depenses", auditPage.getContent());
-        model.addAttribute("totalElement", auditPage.getTotalElements());
-        model.addAttribute("totalPage", new int[auditPage.getTotalPages()]);
-        model.addAttribute("nbTotalPage", auditPage.getTotalPages());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("utilisateurActif", accountService.utilisateurActif());
-
+        Page<Depense> depensePage = service.lister(page);
+        pagination(depensePage, page, model);
         return "depense/liste";
     }
 
@@ -70,14 +73,17 @@ public class DepenseController {
         log.info("Consultation Depense par details : " + details);
 
         Page<Depense> depensePage = service.listerParDetails(page, details);
+        model.addAttribute("details", details);
+        pagination(depensePage, page, model);
+        return "depense/liste";
+    }
 
+    private void pagination(Page<Depense> depensePage, int page, Model model) {
         model.addAttribute("depenses", depensePage.getContent());
         model.addAttribute("totalElement", depensePage.getTotalElements());
         model.addAttribute("totalPage", new int[depensePage.getTotalPages()]);
         model.addAttribute("nbTotalPage", depensePage.getTotalPages());
         model.addAttribute("currentPage", page);
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
-
-        return "depense/liste";
     }
 }

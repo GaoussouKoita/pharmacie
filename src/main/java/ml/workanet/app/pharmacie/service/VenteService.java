@@ -1,6 +1,9 @@
 package ml.workanet.app.pharmacie.service;
 
-import ml.workanet.app.pharmacie.domaine.*;
+import ml.workanet.app.pharmacie.domaine.ES_Medicament;
+import ml.workanet.app.pharmacie.domaine.Medicament;
+import ml.workanet.app.pharmacie.domaine.Stock;
+import ml.workanet.app.pharmacie.domaine.Vente;
 import ml.workanet.app.pharmacie.repository.VenteRepository;
 import ml.workanet.app.pharmacie.securite.entity.Utilisateur;
 import ml.workanet.app.pharmacie.securite.service.AccountService;
@@ -31,19 +34,16 @@ public class VenteService {
     @Autowired
     private StockService stockService;
     @Autowired
-    private AuditService auditService;
-    @Autowired
     private ES_MedicamentService es_medService;
 
 
     public Vente ajouter(Vente vente) {
-        auditService.ajouter(new Audit("Ajout vente", "Montant "
-                + vente.getMontant() + " " + vente.getDate() + " "
-                + vente.getHeure()));
+
         vente.setUtilisateur(accountService.utilisateurActif());
         vente.setPharmacie(accountService.utilisateurActif().getPharmacie());
         long total = 0;
         int quantite = 0;
+        long partAssureur = 0;
 
         List<ES_Medicament> es_medicaments = vente.getMedicaments();
         es_medicaments = es_medService.ajouterListe(es_medicaments);
@@ -53,10 +53,13 @@ public class VenteService {
             Medicament medicament = medService.listerParNom(es_med.getMedicament().getId());
             es_med.setMedicament(medicament);
             es_med.setPrix(medicament.getPrixVente());
-
             total += medicament.getPrixVente() * es_med.getQuantite();
 
+            if (vente.isType() && medicament.isPrisEnCharge()) {
+                partAssureur += medicament.getPrixAssureur() * es_med.getQuantite();
+            }
             quantite += es_med.getQuantite();
+
             Stock stock = stockService.rechercheParMed(medicament, vente.getPharmacie());
             if (stock == null) {
                 stock = new Stock();
@@ -71,10 +74,12 @@ public class VenteService {
                     stockService.ajouter(stock);
                 }
             }
-
         }
 
-        vente.setMontant(total);
+        partAssureur = Math.round(partAssureur * Constante.PART_ASSUREUR);
+        vente.setMontantTotal(total);
+        vente.setMontantAPayer(total - partAssureur);
+        vente.setPartAssureur(partAssureur);
         vente.setNbreMedicament(quantite);
 
         return repository.save(vente);
@@ -82,23 +87,15 @@ public class VenteService {
 
     public Vente rechercher(Long id) {
         Vente vente = repository.findById(id).get();
-        auditService.ajouter(new Audit("Recherche Vente", "Montant "
-                + vente.getMontant() + " " + vente.getDate() + " "
-                + vente.getHeure()));
         return repository.findById(id).get();
     }
 
     public void supprimer(Long id) {
         Vente vente = repository.findById(id).get();
-        auditService.ajouter(new Audit("Suppression Vente", "Montant "
-                + vente.getMontant() + " " + vente.getDate() + " "
-                + vente.getHeure()));
         repository.deleteById(id);
     }
 
     public Page<Vente> lister(int page, int nbreParPage) {
-
-        auditService.ajouter(new Audit("Liste Vente", "Consultation"));
         return repository.findByPharmacie(accountService.utilisateurActif().getPharmacie(),
                 PageRequest.of(page, Constante.NBRE_PAR_PAGE,
                         Sort.by("date").descending().and(Sort.by("heure").ascending())));
@@ -109,6 +106,7 @@ public class VenteService {
                 accountService.utilisateurActif().getPharmacie(),
                 PageRequest.of(page, Constante.NBRE_PAR_PAGE));
     }
+
     public List<Vente> listerParDate(LocalDate date) {
         return repository.findByDateBetweenAndPharmacie(date, date,
                 accountService.utilisateurActif().getPharmacie());
@@ -137,7 +135,7 @@ public class VenteService {
             for (ES_Medicament medicaments : vente.getMedicaments()) {
                 nbreProduitVendu += medicaments.getQuantite();
             }
-            totalVente += vente.getMontant();
+            totalVente += vente.getMontantAPayer();
         }
         nbProdVenduTotalVente.put("nbreMedVendu", nbreProduitVendu);
         nbProdVenduTotalVente.put("totalVente", totalVente);
@@ -182,34 +180,58 @@ public class VenteService {
     public List<Vente> venteTotalParUtilisateur() {
         List<Vente> ventesDuJour = listerParUtilisateurs();
         List<Vente> ventesSansDoublon = new ArrayList<>();
+
         HashMap<Utilisateur, Long> totalVentesUtilisateur = new HashMap<>();
+        HashMap<Utilisateur, Long> totalPartAssureur = new HashMap<>();
 
         for (Vente vente : ventesDuJour) {
+
             Utilisateur utilisateur = vente.getUtilisateur();
-            long montant = vente.getMontant();
+
+            long montantAPayer = vente.getMontantAPayer();
+            long partAssueur = vente.getPartAssureur();
 
             if (totalVentesUtilisateur.containsKey(utilisateur)) {
-                montant += totalVentesUtilisateur.get(utilisateur);
+                montantAPayer += totalVentesUtilisateur.get(utilisateur);
             }
-            totalVentesUtilisateur.put(utilisateur, montant);
+            totalVentesUtilisateur.put(utilisateur, montantAPayer);
+
+            if (totalPartAssureur.containsKey(utilisateur)) {
+                partAssueur += totalPartAssureur.get(utilisateur);
+            }
+            totalPartAssureur.put(utilisateur, partAssueur);
+
         }
 
         for (Map.Entry entry : totalVentesUtilisateur.entrySet()) {
-            Utilisateur utilisateur = (Utilisateur) entry.getKey();
-            long montant = (long) entry.getValue();
 
-            Vente vente = new Vente();
-            vente.setMontant(montant);
-            vente.setUtilisateur(utilisateur);
-            ventesSansDoublon.add(vente);
+            Utilisateur utilisateur = (Utilisateur) entry.getKey();
+            long montantAPayer = (long) entry.getValue();
+
+            for (Map.Entry entry1 : totalPartAssureur.entrySet()) {
+
+                Utilisateur utilisateur1 = (Utilisateur) entry1.getKey();
+
+                long partAssureur = (long) entry1.getValue();
+
+                if (utilisateur.getId() == utilisateur1.getId()) {
+
+                    Vente vente = new Vente();
+                    vente.setMontantAPayer(montantAPayer);
+                    vente.setPartAssureur(partAssureur);
+                    vente.setUtilisateur(utilisateur);
+                    ventesSansDoublon.add(vente);
+                }
+            }
         }
+
+
         return ventesSansDoublon;
 
     }
 
 
-
-    private List<Vente> ventesMois(){
+    private List<Vente> ventesMois() {
         LocalDate date = LocalDate.now();
         int annee = date.getYear();
         int mois = date.getMonth().getValue();
@@ -217,15 +239,15 @@ public class VenteService {
                 date.getMonth().minLength();
         LocalDate dateDebut = LocalDate.of(annee, mois, 1);
         LocalDate dateFin = LocalDate.of(annee, mois, jourMax);
-        return listerParDates(dateDebut,dateFin);
+        return listerParDates(dateDebut, dateFin);
     }
 
-    public long sommeVentesMois(){
-
-        return  ventesMois().stream().mapToLong(Vente::getMontant).sum();
+    public long sommeVentesMois() {
+        return ventesMois().stream().mapToLong(Vente::getMontantAPayer).sum();
     }
 
-
-
-
+    public long sommePartAssureurMois() {
+        return ventesMois().stream().mapToLong(Vente::getPartAssureur).sum();
+    }
 }
+

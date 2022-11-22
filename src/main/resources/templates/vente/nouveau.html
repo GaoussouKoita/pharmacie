@@ -15,7 +15,7 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12 my-2">
+                    <div class="col-12 my-2">
 
                         <div class="card card-info">
                             <div class="card-header">
@@ -27,9 +27,9 @@
                                     <input th:field="*{id}" type="hidden"/>
 
                                     <div class="form-group row">
-                                        <label class="col-lg-2 col-form-label">Assuré<span
+                                        <label class="col-2 col-form-label">Assuré<span
                                                 class="text-danger">*</span></label>
-                                        <div class="col-lg-10">
+                                        <div class="col-10">
                                             <div class="form-check">
                                                 <input checked class="form-check-input" th:field="*{type}"
                                                        type="radio" value=1>
@@ -52,7 +52,7 @@
                                                             <th>Produit</th>
                                                             <th>Quantite
                                                                 <button class="btn btn-xs btn-outline-success ml-5"
-                                                                        id="addBtnVente1"
+                                                                        id="addBtnVente"
                                                                         type="button"><i class="fas fa-plus"></i>
                                                                     Nouveau
                                                                 </button>
@@ -64,15 +64,15 @@
                                                         <tr>
                                                             <td>
                                                                 <div class="form-group row">
-                                                                    <div class="col-lg-12">
+                                                                    <div class="col-12">
                                                                         <select class="form-control select2bs4"
                                                                                 name="medicaments[0].medicament.id"
                                                                                 style="width: 100%;">
-                                                                            <option th:each="medicament:${medicaments}"
-                                                                                    th:if="${medicament.pharmacie.id}==${utilisateurActif.pharmacie.id}"
-                                                                                    th:text="${medicament.nom}+' '
-                                                                                        +${medicament.prixVente}+' F CFA'"
-                                                                                    th:value="${medicament.id}">
+                                                                            <option th:each="stock:${stocks}"
+                                                                                    th:if="${stock.pharmacie.id}==${utilisateurActif.pharmacie.id}"
+                                                                                    th:text="${stock.medicament.nom}+' '
+                                                                                        +${stock.medicament.prixVente}+' F CFA - '+${stock.quantite}+' restants'"
+                                                                                    th:value="${stock.medicament.id}">
                                                                             </option>
                                                                         </select>
                                                                     </div>
@@ -113,41 +113,3 @@
 <script th:replace="fragment/script"></script>
 
 </html>
-
-
-<script th:inline="javascript">
-    $(document).ready(function () {
-        // jQuery button click event to add a row
-        var rowIdx = 1;
-        var med=/*[[${medicaments}]]*/
-
-        $('#addBtnVente1').on('click', function () {
-            // Adding a row inside the tbody.
-            $('#tbody').append(`<tr><td>
-                <div class="form-group row">
-                    <div class="col-lg-12">
-                         <select class="form-control select2bs4"
-                                name="medicaments[${rowIdx}].id"
-                                style="width: 100%;">
-                                <option >${med.length}</option>
-                                for(var i=0){
-                                <option>${med[0].nom} ${med[0].prixVente} F CFA</option>
-                                }
-                           </select>
-                    </div>
-                </div>
-            </td>
-            <td><input class="form-control"
-                       name="medicaments[${rowIdx}].quantite"
-                       placeholder="Entrer la quantite" required
-                       type="number"/></td></tr>`);
-            rowIdx++;
-        });
-
-    });
-
-
-
-
-
-</script>

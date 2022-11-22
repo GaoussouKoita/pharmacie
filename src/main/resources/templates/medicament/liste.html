@@ -4,10 +4,9 @@
     <style th:replace="fragment/style"></style>
     <title>Liste Medicaments</title>
 </head>
-<body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
+<body class="hold-transition sidebar-mini  layout-fixed">
 <div class="wrapper">
-    <div th:replace="fragment/navbar-horizontal"></div>
-    <div th:replace="fragment/navbar-vertical"></div>
+    <div th:replace="fragment/header"></div>
 
     <div class="content-wrapper">
 
@@ -67,7 +66,7 @@
                                         <td th:text="${#numbers.formatInteger(prix,3,'POINT')}+
                                             ' F CFA'" th:with="prix=${ medicament.prixVente }"></td>
                                         <td th:text="${#numbers.formatInteger(prix,3,'POINT')}+
-                                            ' F CFA'" th:with="prix=${ medicament.prixAchat }"></td>
+                                            ' F CFA'" th:with="prix=${ medicament.prixAssureur }"></td>
                                         <td th:text="${ medicament.prisEnCharge }?'OUI':'NON'"></td>
                                         <td th:text="${ medicament.details }"></td>
                                         <td>
@@ -122,9 +121,8 @@
                                     On affiche une liste inline si le nombre de page <=3
 
                             --> <div class="card-tools">
-                                  <ul class="pagination pagination-sm float-left ml-5">
-                                  </ul>
-                                  <ul class="pagination pagination-sm float-right" th:if="${totalElement}>6">
+
+                                  <ul class="pagination pagination-sm float-right" th:if="${totalElement}>6 ">
 
                                       <th:block th:if="${nbTotalPage}<=3">
                                           <li class="page-item" th:classappend="${currentPage}==0?'disabled'">

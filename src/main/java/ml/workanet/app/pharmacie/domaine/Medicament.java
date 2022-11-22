@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
@@ -18,9 +19,6 @@ public class Medicament {
     private String nom;
     @Min(value = 5, message = "Le prix doit être superieur à 5")
     private long prixVente;
-    @Min(value = 5, message = "Le prix d'achat doit être superieur à 5")
-    private long prixAchat;
-    @Min(value = 5, message = "Le prix assureur doit être superieur à 5")
     private long prixAssureur;
     private boolean prisEnCharge=true;
     private String details;

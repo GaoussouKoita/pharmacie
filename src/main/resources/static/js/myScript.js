@@ -40,16 +40,13 @@ $(document).ready(function () {
         $('#addBtn').on('click', function () {
             // Adding a row inside the tbody.
             $('#tbody').append(`<tr>
-                <td><input class="form-control" name="io_produits[${rowIdx}].produit.codeBarre1"
-                     placeholder="Sacnner le produit"   required  type="text"/></td>
-                <td><input class="form-control" name="io_produits[${rowIdx}].quantite"
+                <td><input class="form-control" name="medicaments[${rowIdx}].medicament.id"
+                     placeholder="Sacnner le medicament"   required  type="text"/></td>
+                <td><input class="form-control" name="medicaments[${rowIdx}].quantite"
                     type="number" required placeholder="Entrer la quantite"  /></td>
-                <td><input class="form-control" name="io_produits[${rowIdx}].prix"
+                <td><input class="form-control" name="medicaments[${rowIdx}].prix"
                               type="number" required placeholder="Entrer le prix d'achat par unite de type"  /></td>
-                <td><input class="form-control" name="io_produits[${rowIdx}].type"
-                            placeholder="Bidon, Boite, Sac ... "      type="text" required/></td>
-
-            </tr>`);
+                </tr>`);
             rowIdx++;
         });
 
@@ -64,14 +61,10 @@ $(document).ready(function () {
         $('#addBtnVente').on('click', function () {
             // Adding a row inside the tbody.
             $('#tbody').append(`<tr>
-            <td><input class="form-control"  name="io_produits[${rowIdx}].produit.codeBarre1"
-                    placeholder="Sacnner le produit" required type="number"/></td>
-            <td><input class="form-control" name="io_produits[${rowIdx}].quantite"
+            <td><input class="form-control"  name="medicaments[${rowIdx}].medicament.id"
+                    placeholder="Sacnner le medicament" required type="number"/></td>
+            <td><input class="form-control" name="medicaments[${rowIdx}].quantite"
                     placeholder="Entrer la quantite" required type="number"/></td>
-            <td><select  class="form-control select2bs4" name="io_produits[${rowIdx}].type">
-                <option  value="Details">Details</option>
-                <option  value="Engros">Engros</option>
-            </select></td>
              </tr>`);
             rowIdx++;
         });
@@ -357,7 +350,7 @@ $.getJSON('http://localhost:8080/statistique/chart-vente-utilisateurs', function
   var values = [];
   for (var i = 0; i < ventes.length; i++) {
     my_labels.push(ventes[i].utilisateur['prenom']+' '+ventes[i].utilisateur['nom'])
-    values.push(ventes[i].montant)
+    values.push(ventes[i].montantAPayer)
   }
 
   var pieData = {

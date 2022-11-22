@@ -3,7 +3,7 @@
 <head>
     <style th:replace="fragment/style"></style>
 
-    <title>Salaire</title>
+    <title>Depense</title>
 
 </head>
 <body class="hold-transition sidebar-mini  layout-fixed layout-navbar-fixed ">
@@ -14,33 +14,37 @@
 
         <section class="content">
             <div class="container-fluid">
-                <div class="row"  th:if="${salaire.pharmacie.id}==${utilisateurActif.pharmacie.id}">
+                <div class="row"  th:if="${depense.pharmacie.id}==${utilisateurActif.pharmacie.id}">
                     <div class="col-8 offset-2 my-2">
 
                         <div class="card card-info">
-
                             <div class="card-header">
                                 <div class="card-title">
-                                    <h2>Info salaire</h2>
+                                    <h2>Info Depense</h2>
                                 </div>
                             </div>
 
                             <div class="card-body">
+
                                 <div class="form-group row">
-                                    <label class="col-3 col-form-label">Periode</label>
-                                    <span class="col-9 col-form-label"
-                                          th:text="${salaire.mois}"></span>
+                                    <label class="col-3 col-form-label">Date</label>
+                                    <span class="col-9 col-form-label" th:text="${#temporals.format(depense.date, 'EEEE dd MMMM yyyy') }"></span>
+                                </div> <div class="form-group row">
+                                    <label class="col-3 col-form-label">Heure</label>
+                                    <span class="col-9 col-form-label" th:text="${depense.heure}"></span>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-3 col-form-label">Utilisateur</label>
-                                    <span class="col-9 col-form-label" th:text="${ salaire.utilisateur.prenom }+' '+${ salaire.utilisateur.nom }"></span>
-
+                                    <label class="col-3 col-form-label">Type</label>
+                                    <span class="col-9 col-form-label" th:text="${depense.type}"></span>
+                                </div> <div class="form-group row">
+                                    <label class="col-3 col-form-label">Details</label>
+                                    <span class="col-9 col-form-label" th:text="${depense.details}"></span>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-3 col-form-label">Montant</label>
-                                    <span class="col-9 col-form-label" th:text="${#numbers.formatInteger(prix,3,'POINT')}+
-                                            ' F CFA'" th:with="prix=${ salaire.montant }"></span>
-
+                                    <span class="col-9 col-form-label"
+                                          th:text="${#numbers.formatInteger(montant,3,'POINT')}+
+                                             ' F CFA'" th:with="montant = ${ depense.montant }"></span>
                                 </div>
 
 
@@ -49,10 +53,10 @@
                             <!-- /.card-body -->
                             <div class="card-footer text-center">
                                 <button class="btn btn-outline-success" type="button"><i
-                                        class="fas fa-cancel"></i> <a th:href="@{/salaire/nouveau}">Nouveau</a>
+                                        class="fas fa-cancel"></i> <a th:href="@{/depense/nouveau}">Nouveau</a>
                                 </button>
-                                <button class="btn btn-outline-info" type="button"><i
-                                        class="fas fa-cancel"></i> <a th:href="@{/salaire}">Liste</a>
+                                <button class="btn btn-outline-info" type="button" sec:authorize="hasAuthority('ADMINISTRATEUR')"><i
+                                        class="fas fa-cancel"></i> <a th:href="@{/depense}">Liste</a>
                                 </button>
                             </div>
 

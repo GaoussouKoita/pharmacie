@@ -30,11 +30,11 @@
         </li>
         <li class="nav-item d-none d-sm-inline-block" sec:authorize="hasAuthority('ADMINISTRATEUR')">
             <a class="nav-link" th:classappend="${#httpServletRequest.requestURI==urlCurrent}
-            ?'active text-info':''" th:href="@{/salaire}" th:with="urlCurrent=@{/salaire}">Salaire</a>
+            ?'active text-info':''" th:href="@{/depense}" th:with="urlCurrent=@{/depense}">Depense</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block" sec:authorize="hasAuthority('ADMINISTRATEUR')">
             <a class="nav-link" th:classappend="${#httpServletRequest.requestURI==urlCurrent}
-            ?'active text-info':''" th:href="@{/depense}" th:with="urlCurrent=@{/depense}">Depense</a>
+            ?'active text-info':''" th:href="@{/salaire}" th:with="urlCurrent=@{/salaire}">Salaire</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block" sec:authorize="hasAuthority('ADMINISTRATEUR')">
             <a class="nav-link" th:classappend="${#httpServletRequest.requestURI==urlCurrent}

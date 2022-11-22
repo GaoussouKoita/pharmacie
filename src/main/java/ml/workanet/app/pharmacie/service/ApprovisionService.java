@@ -26,14 +26,9 @@ public class ApprovisionService {
     private StockService stockService;
     @Autowired
     private DepenseService depenseService;
-    @Autowired
-    private AuditService auditService;
+
 
     public Approvision ajouter(Approvision approvision) {
-        auditService.ajouter(new Audit("Ajout approvision", "Montant "
-                + approvision.getMontant() + " " + approvision.getDate() + " "
-                + approvision.getHeure()));
-
 
         approvision.setUtilisateur(accountService.utilisateurActif());
         approvision.setPharmacie(accountService.utilisateurActif().getPharmacie());
@@ -74,29 +69,23 @@ public class ApprovisionService {
 
     public Approvision rechercher(Long id) {
         Approvision approvision = repository.findById(id).get();
-        auditService.ajouter(new Audit("Cherche approvision", "Montant "
-                + approvision.getMontant() + " " + approvision.getDate() + " "
-                + approvision.getHeure()));
+
         return approvision;
     }
 
     public void supprimer(Long id) {
         Approvision approvision = repository.findById(id).get();
-        auditService.ajouter(new Audit("Suppression approvision", "Montant "
-                + approvision.getMontant() + " " + approvision.getDate() + " "
-                + approvision.getHeure()));
+
         repository.deleteById(id);
     }
 
     public Page<Approvision> lister(int page, int nbreParPage) {
-        auditService.ajouter(new Audit("Liste Approvision", "Consultation"));
         return repository.findByPharmacie(accountService.utilisateurActif().getPharmacie(),
                 PageRequest.of(page, nbreParPage,Sort.by("date").descending()
                         .and(Sort.by("heure").ascending())));
     }
 
     public Page<Approvision> listerEntreDates(LocalDate dateDebut, LocalDate dateFin, int page, int nbreParPage) {
-        auditService.ajouter(new Audit("Liste Approvision entre dates "+ dateDebut+"-"+dateFin, "Consultation"));
         return repository.findByDateBetweenAndPharmacie(dateDebut, dateFin, accountService.utilisateurActif().getPharmacie(),
                 PageRequest.of(page, nbreParPage,
                 Sort.by("date").descending().and(Sort.by("heure").ascending())));

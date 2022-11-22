@@ -4,7 +4,7 @@ package ml.workanet.app.pharmacie.controller;
 import lombok.extern.slf4j.Slf4j;
 import ml.workanet.app.pharmacie.domaine.Vente;
 import ml.workanet.app.pharmacie.securite.service.AccountService;
-import ml.workanet.app.pharmacie.service.MedicamentService;
+import ml.workanet.app.pharmacie.service.StockService;
 import ml.workanet.app.pharmacie.service.VenteService;
 import ml.workanet.app.pharmacie.utils.Constante;
 import ml.workanet.app.pharmacie.utils.Endpoint;
@@ -28,14 +28,14 @@ public class VenteController {
     @Autowired
     private AccountService accountService;
     @Autowired
-    private MedicamentService medicamentService;
+    private StockService stockService;
 
 
     @GetMapping(Endpoint.NOUVEAU)
     public String formVente(Model model) {
         log.info("Formulaire Vente");
         model.addAttribute("vente", new Vente());
-        model.addAttribute("medicaments", medicamentService.lister());
+        model.addAttribute("stocks", stockService.lister());
         model.addAttribute("utilisateurActif", accountService.utilisateurActif());
         return "vente/nouveau";
     }

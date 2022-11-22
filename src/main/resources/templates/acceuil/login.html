@@ -6,54 +6,61 @@
     <style th:replace="fragment/style"></style>
 </head>
 <body class="hold-transition login-page">
-<div class="login-box">
-    <!-- /.login-logo -->
-    <div class="card card-outline card-info">
-        <div class="card-header text-center h1"><b>Authentification </b></a>
-        </div>
-        <div class="card-body">
-            <p class="login-box-msg text-info">Saisissez vos identifiants</p>
-            <p class="text-danger text-center" th:if="${param.error}">
-                Email et/ou Password Incorrect.s!
-            </p>
-            <form method="post" th:action="@{/login}">
-                <div class="input-group mb-3">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="login-box">
+                        <!-- /.login-logo -->
+                        <div class="card card-outline card-info">
+                            <div class="card-header text-center h1"><b>Authentification </b></a>
+                            </div>
+                            <div class="card-body">
+                                <p class="login-box-msg text-info">Saisissez vos identifiants</p>
+                                <p class="text-danger text-center" th:if="${param.error}">
+                                    Email et/ou Password Incorrect.s!
+                                </p>
+                                <form method="post" th:action="@{/login}">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-envelope"></span>
+                                            </div>
+                                        </div>
+                                        <input autofocus class="form-control"
+                                               name="username" placeholder="Veuillez entre votre email" type="email">
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-lock"></span>
+                                            </div>
+                                        </div>
+                                        <input class="form-control" name="password"
+                                               placeholder="Veuillez entre votre password" type="password">
+                                    </div>
+                                    <div class="icheck-info">
+                                        <input id="remember" name="remember-me" type="checkbox">
+                                        <label for="remember">
+                                            Se Souvenir
+                                        </label>
+                                    </div>
+
+                                    <!-- /.col -->
+                                    <div class="col-6 offset-3 my-4 ">
+                                        <button class="btn btn-outline-info" type="submit">Se Connecter</button>
+                                    </div>
+                                    <!-- /.col -->
+
+                                </form>
+                                <!-- /.card-body -->
+                            </div>
+                            <!-- /.card -->
                         </div>
                     </div>
-                    <input class="form-control" name="username"
-                          autofocus placeholder="Veuillez entre votre email" type="email">
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                        </div>
-                    </div>
-                    <input class="form-control" name="password"
-                           placeholder="Veuillez entre votre password" type="password">
-                </div>
-                <div class="icheck-info">
-                    <input id="remember" type="checkbox" name="remember-me">
-                    <label for="remember">
-                        Se Souvenir
-                    </label>
-                </div>
 
-                <!-- /.col -->
-                <div class="col-lg-6 col-6 offset-3 my-4 ">
-                    <button class="btn btn-outline-info" type="submit">Se Connecter</button>
                 </div>
-                <!-- /.col -->
-
-            </form>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-    </div>
-</div>
-
+            </div>
+        </section>
 </body>
 </html>

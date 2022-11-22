@@ -1,13 +1,11 @@
 package ml.workanet.app.pharmacie.securite.service;
 
 
-import ml.workanet.app.pharmacie.domaine.Audit;
 import ml.workanet.app.pharmacie.securite.entity.ChangePassword;
 import ml.workanet.app.pharmacie.securite.entity.Role;
 import ml.workanet.app.pharmacie.securite.entity.Utilisateur;
 import ml.workanet.app.pharmacie.securite.repository.RoleRepository;
 import ml.workanet.app.pharmacie.securite.repository.UtilisateurRepository;
-import ml.workanet.app.pharmacie.service.AuditService;
 import ml.workanet.app.pharmacie.utils.Constante;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

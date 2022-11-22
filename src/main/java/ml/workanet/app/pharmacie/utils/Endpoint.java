@@ -11,7 +11,6 @@ public interface Endpoint {
     String TYPE = "/type";
     String SALAIRE = "/salaire";
     String DEPENSE = "/depense";
-    String AUDIT = "/audit";
     String STATISTIQUE = "/statistique";
 
     //Endpoint sur les methodes dans les controllers
@@ -34,17 +33,27 @@ public interface Endpoint {
     String LOGIN = "/login";
 
 
-    String ALL_RESSOURCE="/**/**";
+    String ALL_RESSOURCE="**/**";
     String CSS="/css/**";
     String JS="/js/**";
     String WEBFONTS="/webfonts/**";
-    String IMAGE="/webfonts/**";
+    String IMAGE="/image/**";
 
 
     //Ressources par role
     String[] WHITE_LIST={LOGIN, ERROR, CSS, JS, WEBFONTS, IMAGE};
-    String[] EMPLOYE_ROLE_ACCESS ={UTILISATEUR + PASSWORD, STATISTIQUE+CHART_VENTE_UTILISATEUR};
-    String[] ADMINSTRATEUR_ROLE_ACCESS={ UTILISATEUR +ALL_RESSOURCE, SALAIRE, STATISTIQUE+ALL_RESSOURCE};
+
+    String[] EMPLOYE_ROLE_ACCESS ={STOCK+ALL_RESSOURCE, MEDICAMENT+ALL_RESSOURCE,
+            APPROVISION,APPROVISION+NOUVEAU,APPROVISION+DETAILS+ALL_RESSOURCE,
+            VENTE, VENTE+NOUVEAU, VENTE+DETAILS+ALL_RESSOURCE,
+            TYPE+ALL_RESSOURCE,
+            DEPENSE+NOUVEAU,UTILISATEUR + PASSWORD, STATISTIQUE+CHART_VENTE_UTILISATEUR};
+
+    String[] ADMINSTRATEUR_ROLE_ACCESS={ SALAIRE+ALL_RESSOURCE, UTILISATEUR +ALL_RESSOURCE,
+                    DEPENSE, DEPENSE+DETAILS+ALL_RESSOURCE,VENTE+INFO+ALL_RESSOURCE,
+                    VENTE+SUPPRESSION+ALL_RESSOURCE,APPROVISION+SUPPRESSION+ALL_RESSOURCE,
+                    STATISTIQUE+ALL_RESSOURCE};
+
     String[] ROOT_ROLE_ACCESS={ PHARMACIE +ALL_RESSOURCE};
 
 }
